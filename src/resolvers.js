@@ -19,8 +19,18 @@ let userExample = [{
 const resolvers = {
     Query: {
         hello: () => 'Stip',
-        users: () => userExample,
-        user: (obj, args) => userExample[args.id],
+        users: (obj, args, context) => {
+            return context.db.query(aql`for n in users return n`)
+                .then(resp => resp.all()).then((list) => list)
+                .catch(err => console.log(err))
+        },
+        user: (obj, args, context) => {
+            return context.db.query(aql`for n in users
+                            filter n._id == ${args.id}
+                            return n`)
+                .then(resp => resp.all()).then((list) => list[0])
+                .catch(err => console.log(err))
+        },
         entidades: (obj, args, context) => {
             return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Entidade' GRAPH 'Graph'
                             FILTER e.rel == 'type'

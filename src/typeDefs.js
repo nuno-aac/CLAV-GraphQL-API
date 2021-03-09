@@ -5,7 +5,7 @@ const typeDefs = gql`
     type Query {
         hello: String
         users: [User!]!
-        user(id: Int!): User
+        user(id: String!): User
         entidades: [Entidade!]!
         entidade(_key: String!): Entidade
         legislacoes: [Legislacao!]!
@@ -17,7 +17,7 @@ const typeDefs = gql`
     }
 
     type User {
-        id: String!
+        _id: String!
         email: String
         password: String
     }
