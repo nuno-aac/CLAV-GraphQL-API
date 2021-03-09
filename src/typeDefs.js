@@ -13,7 +13,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        legislacao(_key: String!): Legislacao
+        legislacao(_key: String!, diplomaData: String): Legislacao
     }
 
     type User {
@@ -35,13 +35,13 @@ const typeDefs = gql`
     }
 
     type Legislacao {
-        _key: String!,
-        diplomaData: String!,
-        diplomaEstado: String!,
-        diplomaLink: String!,
-        diplomaNumero: String!,
-        diplomaSumario: String!,
-        diplomaTipo: String!
+        _key: String,
+        diplomaData: String,
+        diplomaEstado: String,
+        diplomaLink: String,
+        diplomaNumero: String,
+        diplomaSumario: String,
+        diplomaTipo: String
     }
 
 `;

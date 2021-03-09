@@ -52,7 +52,9 @@ const resolvers = {
     },
     Mutation: {
         legislacao: (obj, args, context) =>{
-            return context.db.query(aql`INSERT { _key:${args._key}, :diplomaData ${args.diplomata_Data}}`)
+            return context.db.query(aql`UPSERT { _key:${args._key} } 
+                                        INSERT { _key:${args._key}, diplomaData: ${args.diplomaData} }
+                                        UPDATE { diplomaData: ${args.diplomaData} } IN Nodes OPTIONS { exclusive: true }`)
                 .then(resp => resp.all()).then((list) => list[0])
                 .catch(err => console.log(err))
         } 
