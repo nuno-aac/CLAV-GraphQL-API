@@ -8,6 +8,8 @@ const typeDefs = gql`
         user(id: Int!): User
         entidades: [Entidade!]!
         entidade(_key: String!): Entidade
+        legislacoes: [Legislacao!]!
+        legislacao(_key: String!): Legislacao
     }
 
     type User {
@@ -27,6 +29,17 @@ const typeDefs = gql`
         entDesignacao: String!,
         entInternacional: String!
     }
+
+    type Legislacao {
+        _key: String!,
+        diplomaData: String!,
+        diplomaEstado: String!,
+        diplomaLink: String!,
+        diplomaNumero: String!,
+        diplomaSumario: String!,
+        diplomaTipo: String!
+    }
+
 `;
 
 module.exports = typeDefs

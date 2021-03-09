@@ -34,6 +34,20 @@ const resolvers = {
                             RETURN v`)
                 .then(resp => resp.all()).then((list) => list[0])
                 .catch(err => console.log(err))
+        },
+        legislacoes: (obj, args, context) => {
+            return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
+                            FILTER e.rel == 'type'
+                            RETURN v`)
+                .then(resp => resp.all()).then((list) => list)
+                .catch(err => console.log(err))
+        },
+        legislacao: (obj, args, context)  => {
+            return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
+                            FILTER e.rel == 'type' && v._key == ${args._key}
+                            RETURN v`)
+                .then(resp => resp.all()).then((list) => list[0])
+                .catch(err => console.log(err))
         }
     },
 };
