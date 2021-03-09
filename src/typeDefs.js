@@ -12,6 +12,10 @@ const typeDefs = gql`
         legislacao(_key: String!): Legislacao
     }
 
+    type Mutation {
+        legislacao(_key: String!): Legislacao
+    }
+
     type User {
         id: String!
         email: String
