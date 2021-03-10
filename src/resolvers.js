@@ -1,19 +1,4 @@
-const { aql } = require("arangojs");
-
-let userExample = [{
-    id: "0",
-    email: "email@email.com",
-    password: "sporting1906"
-}, {
-    id: "1",
-    email: "email@email.com",
-    password: "sporting1906"
-}, {
-    id: "2",
-    email: "email@email.com",
-    password: "sporting1906"
-}
-]
+const entidades = require('./controllers/entidades')
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -32,18 +17,10 @@ const resolvers = {
                 .catch(err => console.log(err))
         },
         entidades: (obj, args, context) => {
-            return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Entidade' GRAPH 'Graph'
-                            FILTER e.rel == 'type'
-                            RETURN v`)
-                .then(resp => resp.all()).then((list) => list)
-                .catch(err => console.log(err))
+            return entidades.list(context.db);
         },
         entidade: (obj, args, context) => {
-            return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Entidade' GRAPH 'Graph'
-                            FILTER e.rel == 'type' && v._key == ${args._key}
-                            RETURN v`)
-                .then(resp => resp.all()).then((list) => list[0])
-                .catch(err => console.log(err))
+            return entidades.find(context.db,args._key)
         },
         legislacoes: (obj, args, context) => {
             return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
@@ -72,7 +49,10 @@ const resolvers = {
             return context.db.query(aql`INSERT { email: ${args.email}, password: ${args.password}} INTO users LET inserted = NEW RETURN inserted`)
                 .then(resp => resp.all()).then((list) => list[0])
                 .catch(err => console.log(err))
-        } 
+        },
+        addEntidade: (obj,args,context) => {
+            return entidades.add(context.db,args.ent)
+        }
     }
 };
 

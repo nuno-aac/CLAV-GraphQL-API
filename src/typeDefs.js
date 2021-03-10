@@ -1,28 +1,26 @@
 const { gql } = require('apollo-server-express');
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-    type Query {
-        hello: String
-        users: [User!]!
-        user(id: String!): User
-        entidades: [Entidade!]!
-        entidade(_key: String!): Entidade
-        legislacoes: [Legislacao!]!
-        legislacao(_key: String!): Legislacao
+const inputs = gql`
+    """Entidades são entidades no sistema"""
+    input EntidadeInput {
+        _key: String!,
+        entEstado: String!,
+        entSIOE: String!,
+        entSigla: String!,
+        entDataCriacao: String,
+        entDataExtincao: String,
+        entDesignacao: String!,
+        entInternacional: String!
     }
+`
 
-    type Mutation {
-        legislacao(_key: String!, diplomaData: String): Legislacao
-        registerUser(email:String!, password:String!): User
-    }
-
+const types = gql`
     type User {
         _id: String!
         email: String
         password: String
     }
-    
+
     """Entidades são entidades no sistema"""
     type Entidade {
         _key: String!,
@@ -45,6 +43,29 @@ const typeDefs = gql`
         diplomaTipo: String
     }
 
+`
+
+// Construct a schema, using GraphQL schema language
+const typeDefs = gql`
+    type Query {
+        hello: String
+        users: [User!]!
+        user(id: String!): User
+        entidades: [Entidade!]!
+        entidade(_key: String!): Entidade
+        legislacoes: [Legislacao!]!
+        legislacao(_key: String!): Legislacao
+    }
+
+    type Mutation {
+        legislacao(_key: String!, diplomaData: String): Legislacao
+        registerUser(email:String!, password:String!): User
+        addEntidade(ent: EntidadeInput): Entidade
+    }
+
+    ${types}
+
+    ${inputs}
 `;
 
 module.exports = typeDefs
