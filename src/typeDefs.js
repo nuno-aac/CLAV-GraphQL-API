@@ -1,6 +1,12 @@
 const { gql } = require('apollo-server-express');
 
 const inputs = gql`
+    input UserInput {
+        _id: String
+        email: String!
+        password: String!
+    }
+
     """Entidades são entidades no sistema"""
     input EntidadeInput {
         _key: String!,
@@ -27,9 +33,9 @@ const inputs = gql`
 
 const types = gql`
     type User {
-        _id: String!
-        email: String
-        password: String
+        _id: String
+        email: String!
+        password: String!
     }
 
     """Entidades são entidades no sistema"""
@@ -69,7 +75,7 @@ const typeDefs = gql`
 
     type Mutation {
         addlegislacao(leg: LegislacaoInput!): Legislacao
-        registerUser(email:String!, password:String!): User
+        registerUser(u: UserInput!): User
         addEntidade(ent: EntidadeInput!): Entidade
     }
 
