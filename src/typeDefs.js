@@ -12,6 +12,17 @@ const inputs = gql`
         entDesignacao: String!,
         entInternacional: String!
     }
+
+    input LegislacaoInput {
+        _key: String!,
+        diplomaData: String!,
+        diplomaEstado: String!,
+        diplomaLink: String!,
+        diplomaNumero: String!,
+        diplomaSumario: String!,
+        diplomaTipo: String!
+    }
+
 `
 
 const types = gql`
@@ -34,13 +45,13 @@ const types = gql`
     }
 
     type Legislacao {
-        _key: String,
-        diplomaData: String,
-        diplomaEstado: String,
-        diplomaLink: String,
-        diplomaNumero: String,
-        diplomaSumario: String,
-        diplomaTipo: String
+        _key: String!,
+        diplomaData: String!,
+        diplomaEstado: String!,
+        diplomaLink: String!,
+        diplomaNumero: String!,
+        diplomaSumario: String!,
+        diplomaTipo: String!
     }
 
 `
@@ -57,7 +68,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        legislacao(_key: String!, diplomaData: String): Legislacao
+        addlegislacao(leg: LegislacaoInput): Legislacao
         registerUser(email:String!, password:String!): User
         addEntidade(ent: EntidadeInput!): Entidade
     }
