@@ -68,7 +68,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addlegislacao(leg: LegislacaoInput): Legislacao
+        addlegislacao(leg: LegislacaoInput!): Legislacao
         registerUser(email:String!, password:String!): User
         addEntidade(ent: EntidadeInput!): Entidade
     }
