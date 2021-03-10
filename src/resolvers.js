@@ -67,6 +67,11 @@ const resolvers = {
                                         UPDATE { diplomaData: ${args.diplomaData} } IN Nodes OPTIONS { exclusive: true }`)
                 .then(resp => resp.all()).then((list) => list[0])
                 .catch(err => console.log(err))
+        },
+        registerUser: (obj, args, context) =>{
+            return context.db.query(aql`INSERT { email: ${args.email}, password: ${args.password}} INTO users LET inserted = NEW RETURN inserted`)
+                .then(resp => resp.all()).then((list) => list[0])
+                .catch(err => console.log(err))
         } 
     }
 };

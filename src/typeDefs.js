@@ -14,6 +14,7 @@ const typeDefs = gql`
 
     type Mutation {
         legislacao(_key: String!, diplomaData: String): Legislacao
+        registerUser(email:String!, password:String!): User
     }
 
     type User {
