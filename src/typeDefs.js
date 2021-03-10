@@ -48,7 +48,6 @@ const types = gql`
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
     type Query {
-        hello: String
         users: [User!]!
         user(id: String!): User
         entidades: [Entidade!]!

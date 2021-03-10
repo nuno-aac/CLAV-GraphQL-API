@@ -3,7 +3,6 @@ const entidades = require('./controllers/entidades')
 // Provide resolver functions for your schema fields
 const resolvers = {
     Query: {
-        hello: () => 'Stip',
         users: (obj, args, context) => {
             return context.db.query(aql`for n in users return n`)
                 .then(resp => resp.all()).then((list) => list)
