@@ -25,11 +25,14 @@ const resolvers = {
         }
     },
     Mutation: {
+        registerUser: (obj, args, context) => {
+            return users.add(context.db, args.u)
+        },
+        login: (obj, args, context) => {
+            return users.login(context.db,args.email,args.password)
+        },
         addlegislacao: (obj, args, context) => {
             return legislacoes.add(context.db, args.leg)
-        },
-        registerUser: (obj, args, context) =>{
-            return users.add(context.db, args.u)
         },
         addEntidade: (obj,args,context) => {
             return entidades.add(context.db,args.ent)

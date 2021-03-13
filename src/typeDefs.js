@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const inputs = gql`
     input UserInput {
-        _id: String
+        _key: String
         email: String!
         password: String!
     }
@@ -33,7 +33,7 @@ const inputs = gql`
 
 const types = gql`
     type User {
-        _id: String
+        _key: String
         email: String!
         password: String!
     }
@@ -60,6 +60,11 @@ const types = gql`
         diplomaTipo: String!
     }
 
+    type Login {
+        token: String!
+        user: User!
+    }
+
 `
 
 // Construct a schema, using GraphQL schema language
@@ -74,8 +79,9 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addlegislacao(leg: LegislacaoInput!): Legislacao
         registerUser(u: UserInput!): User
+        login(email: String!, password: String!): Login
+        addlegislacao(leg: LegislacaoInput!): Legislacao
         addEntidade(ent: EntidadeInput!): Entidade
     }
 
