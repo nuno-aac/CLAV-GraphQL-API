@@ -7,13 +7,20 @@ const resolvers = require('./src/resolvers')
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({
-        db: new Database({
-            url: "http://localhost:8529",
-            databaseName: "Test",
-            auth: { username: "root", password: "coficofi1" },
-        })
-    })
+    context: ({req}) => {
+        console.log(req.headers.cookie) // COOKIE PARSE TO GET TOKEN
+
+        // VERIFY TOKEN
+
+        return {
+            db: new Database({
+                url: "http://localhost:8529",
+                databaseName: "Test",
+                auth: { username: "root", password: "coficofi1" }
+            }),
+            user: null //ADD USER INSIDE TOKEN
+        }
+    }
 });
 
 const app = express();

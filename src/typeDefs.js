@@ -44,7 +44,6 @@ const inputs = gql`
         diplomaSumario: String!,
         diplomaTipo: String!
     }
-
 `
 
 const types = gql`
@@ -68,6 +67,15 @@ const types = gql`
 
     type Local {
         password: String!
+    }
+
+    """Classes representam classes no sistema"""
+    type Classe {
+        _key: String!
+        codigo: String!
+        titulo: String!
+        id: String!
+        status: String!
     }
 
     """Entidades são entidades no sistema"""
@@ -108,6 +116,7 @@ const typeDefs = gql`
         entidade(_key: String!): Entidade
         legislacoes: [Legislacao!]!
         legislacao(_key: String!): Legislacao
+        classes(tipo: String, nivel: Int, ents: [String!], tips: [String!]): [Classe!]!
     }
 
     type Mutation {

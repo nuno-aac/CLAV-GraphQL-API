@@ -1,5 +1,6 @@
 const entidades = require('./controllers/entidades')
 const legislacoes = require('./controllers/legislacoes')
+const classes = require('./controllers/classes')
 const users = require('./controllers/users')
 
 // Provide resolver functions for your schema fields
@@ -22,7 +23,10 @@ const resolvers = {
         },
         legislacao: (obj, args, context)  => {
             return legislacoes.find(context.db, args._key)
-        }
+        },
+        classes: (obj, args, context) => {
+            return classes.list(context.db,args)
+        },
     },
     Mutation: {
         registerUser: (obj, args, context) => {
