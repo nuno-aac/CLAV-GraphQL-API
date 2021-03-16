@@ -22,7 +22,7 @@ module.exports.add = (db, user) => {
         .catch(err => console.log(err))
 }
 
-module.exports.login =  (db,email,password) => {
+module.exports.login =  (db,email,password, context) => {
     return db.query(aql`for n in users
                     filter n.email == ${email}
                     return n`)
@@ -30,10 +30,16 @@ module.exports.login =  (db,email,password) => {
         .then(user => {
             if(!user)
                 throw new AuthenticationError('Utilizador desconhecido');
-            if(user.password !== password)
+            if(user.local.password != password)
                 throw new AuthenticationError('Password Errada');
-                
-            return { token: jwt.sign(user, 'CLAVapisecret', { expiresIn: '3h' }), user: user }
+            
+            let token = jwt.sign(user, 'CLAVapisecret', { expiresIn: '3h' })
+            context.res.cookie('token', token, {//not working
+                expires: new Date(Date.now() + '3h'),
+                secure: false, // set to true if your using https
+                httpOnly: true
+            });
+            return { token: token, user: user }
         })
         .catch(err => {
             if (err.extensions.code === 'UNAUTHENTICATED')

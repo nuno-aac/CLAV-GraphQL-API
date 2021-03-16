@@ -3,13 +3,15 @@ const { ApolloServer } = require('apollo-server-express');
 const { Database } = require("arangojs");
 const typeDefs = require('./src/typeDefs')
 const resolvers = require('./src/resolvers')
+const cookieParser = require("cookie-parser")
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({req}) => {
-        console.log(req.headers.cookie) // COOKIE PARSE TO GET TOKEN
-
+    context: ({req, res}) => {
+        // COOKIE PARSE TO GET TOKEN
+        console.log(req.cookies.token)//doesnt work
+        
         // VERIFY TOKEN
 
         return {
@@ -18,12 +20,15 @@ const server = new ApolloServer({
                 databaseName: "Test",
                 auth: { username: "root", password: "coficofi1" }
             }),
-            user: null //ADD USER INSIDE TOKEN
+            user: null, //ADD USER INSIDE TOKEN
+            res: res,
+            req: req
         }
     }
 });
 
 const app = express();
+app.use(cookieParser());
 server.applyMiddleware({ app });
 
 app.listen({ port: 4000 }, () =>

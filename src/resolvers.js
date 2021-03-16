@@ -33,7 +33,7 @@ const resolvers = {
             return users.add(context.db, args.u)
         },
         login: (obj, args, context) => {
-            return users.login(context.db,args.email,args.password)
+            return users.login(context.db,args.email,args.password, context)
         },
         addlegislacao: (obj, args, context) => {
             return legislacoes.add(context.db, args.leg)
