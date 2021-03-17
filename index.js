@@ -10,7 +10,7 @@ const server = new ApolloServer({
     resolvers,
     context: ({req, res}) => {
         // COOKIE PARSE TO GET TOKEN
-        //console.log(req.cookies)//doesnt work
+        console.log(req.cookies)//doesnt work
         
         // VERIFY TOKEN
 
