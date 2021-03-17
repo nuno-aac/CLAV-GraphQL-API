@@ -42,9 +42,9 @@ module.exports.login =  (db,email,password, context) => {
             return { token: token, user: user }
         })
         .catch(err => {
-            if (err.extensions.code === 'UNAUTHENTICATED')
+            if (err.extensions != null && err.extensions.code === 'UNAUTHENTICATED')
                 throw err
             else 
-                throw new ApolloError('Erro no acesso à DB')
+                throw new ApolloError('Erro no acesso à DB' + err.toString())
         })
 }

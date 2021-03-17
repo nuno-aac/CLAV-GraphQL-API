@@ -75,7 +75,7 @@ const types = gql`
         codigo: String!
         titulo: String!
         id: String!
-        status: String!
+        status: String
     }
 
     """Entidades são entidades no sistema"""

@@ -10,7 +10,7 @@ const server = new ApolloServer({
     resolvers,
     context: ({req, res}) => {
         // COOKIE PARSE TO GET TOKEN
-        console.log(req.cookies.token)//doesnt work
+        //console.log(req.cookies)//doesnt work
         
         // VERIFY TOKEN
 
@@ -21,9 +21,14 @@ const server = new ApolloServer({
                 auth: { username: "root", password: "coficofi1" }
             }),
             user: null, //ADD USER INSIDE TOKEN
-            res: res,
-            req: req
+            res,
+            req
         }
+    },
+    playground: {
+        settings: {
+            'request.credentials': 'include',
+        },
     }
 });
 
