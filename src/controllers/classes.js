@@ -49,7 +49,7 @@ let buildFilter = (args) => {
     return aql.join(filters)
 
 }
-module.exports.list = (db, args) => {
+module.exports.list = (context, args) => {
     let nivel = aql.literal('1..4')
     if(args.nivel != null)
         if(args.nivel >= 1 && args.nivel <= 4)
@@ -64,7 +64,7 @@ module.exports.list = (db, args) => {
                             ${filter}
                             return distinct v`
     console.log(query.query)
-    return db.query(aql`${query}`)
+    return context.db.query(aql`${query}`)
         .then(resp => resp.all()).then((list) => list)
         .catch(err => console.log(err))
 }

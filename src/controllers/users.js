@@ -2,28 +2,28 @@ const { aql } = require("arangojs");
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
 var jwt = require('jsonwebtoken');
 
-module.exports.list = (db) => {
-    return db.query(aql`for n in users return n`)
+module.exports.list = (context) => {
+    return context.db.query(aql`for n in users return n`)
         .then(resp => resp.all()).then((list) => list) // Parsing ArrayCursor from arango to user list
         .catch(err => console.log(err))
 }
 
-module.exports.find = (db,id) => {
-    return db.query(aql`for n in users
+module.exports.find = (context,id) => {
+    return context.db.query(aql`for n in users
                     filter n._key == ${id}
                     return n`)
         .then(resp => resp.all()).then((list) => list[0]) // Parsing ArrayCursor from arango to single user
         .catch(err => console.log(err))
 }
 
-module.exports.add = (db, user) => {
-    return db.query(aql`INSERT ${user} INTO users LET inserted = NEW RETURN inserted`)
+module.exports.add = (context, user) => {
+    return context.db.query(aql`INSERT ${user} INTO users LET inserted = NEW RETURN inserted`)
         .then(resp => resp.all()).then((list) => list[0]) // Parsing ArrayCursor from arango to single user
         .catch(err => console.log(err))
 }
 
-module.exports.login =  (db,email,password, context) => {
-    return db.query(aql`for n in users
+module.exports.login = (context,email,password) => {
+    return context.db.query(aql`for n in users
                     filter n.email == ${email}
                     return n`)
         .then(resp => resp.all()).then((list) => list[0]) // Parsing ArrayCursor from arango to single user

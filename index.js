@@ -3,16 +3,20 @@ const { ApolloServer } = require('apollo-server-express');
 const { Database } = require("arangojs");
 const typeDefs = require('./src/typeDefs')
 const resolvers = require('./src/resolvers')
+var jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser")
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({req, res}) => {
+        let user;
         // COOKIE PARSE TO GET TOKEN
-        //console.log(req.cookies)//doesnt work
-        
-        // VERIFY TOKEN
+        try{
+            user = jwt.verify(req.cookies.token, 'CLAVapisecret')
+        } catch{
+            user = null;
+        }
 
         return {
             db: new Database({
@@ -20,7 +24,7 @@ const server = new ApolloServer({
                 databaseName: "Test",
                 auth: { username: "root", password: "coficofi1" }
             }),
-            user: null, //ADD USER INSIDE TOKEN
+            user: user, //ADD USER INSIDE TOKEN
             res,
             req
         }
