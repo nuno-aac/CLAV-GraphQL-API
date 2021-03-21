@@ -51,10 +51,16 @@ let buildFilter = (args) => {
 }
 
 module.exports.list = (context, args) => {
+    let nivel = aql.literal('1..4')
+    if (args.nivel != null)
+        if (args.nivel >= 1 && args.nivel <= 4)
+            nivel = aql.literal(args.nivel)
+        else
+            throw new UserInputError('Nivel de processo invalido')
 
     let filter = buildFilter(args);
 
-    let query = aql`FOR v,e IN 1..4 INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
+    let query = aql`FOR v,e IN ${nivel} INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
                             FILTER e.rel == 'type' || e.rel == 'temPai'
                             ${filter}
                             return distinct v`
@@ -122,7 +128,32 @@ module.exports.tree = (context, args) => {
         .catch(err => console.log(err))
 }
 
+module.exports.count = (context) => {
+    let query = aql`LET n1  = (
+                        FOR v1,e1 IN 1..4 INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
+                        FILTER e1.rel == 'type' || e1.rel=='temPai'
+                        return v1
+                    )
+                    return {n: LENGTH(n1)}`
 
+    return context.db.query(aql`${query}`)
+        .then(resp => resp.all()).then((list) => list[0].n)
+        .catch(err => console.log(err))
+}
+
+module.exports.countNivel = (context,nivel) => {
+    let aqlNivel = aql.literal(nivel)
+    let query = aql`LET n1  = (
+                        FOR v1,e1 IN 1 INBOUND 'Nodes/Classe_N${aqlNivel}' GRAPH 'Graph'
+                        FILTER e1.rel == 'type' || e1.rel=='temPai'
+                        return v1
+                    )
+                    return {n: LENGTH(n1)}`
+
+    return context.db.query(aql`${query}`)
+        .then(resp => resp.all()).then((list) => list[0].n)
+        .catch(err => console.log(err))
+}
 
 /*
 module.exports.find = (db, id) => {

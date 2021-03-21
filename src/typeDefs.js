@@ -114,6 +114,14 @@ const types = gql`
         user: User!
     }
 
+    type Indicadores {
+        classes: Int!
+        classesN1: Int!
+        classesN2: Int!
+        classesN3: Int!
+        classesN4: Int!
+    }
+
 `
 
 // Construct a schema, using GraphQL schema language
@@ -127,6 +135,7 @@ const typeDefs = gql`
         legislacao(_key: String!): Legislacao
         classes(tipo: String, nivel: Int, ents: [String!], tips: [String!]): [Classe!]!
         classesTree: [ClasseTree]
+        indicadores: Indicadores!
     }
 
     type Mutation {

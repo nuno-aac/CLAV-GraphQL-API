@@ -30,6 +30,9 @@ const resolvers = {
         classesTree: (obj, args, context) => {
             return classes.tree(context, args)
         },
+        indicadores: () =>{
+            return {}  //Object will be filled in auxiliary resolvers bellow
+        }
     },
     Mutation: {
         registerUser: (obj, args, context) => {
@@ -43,6 +46,23 @@ const resolvers = {
         },
         addEntidade: (obj,args,context) => {
             return entidades.add(context,args.ent)
+        }
+    },
+    Indicadores: {
+        classes: (obj, args, context) => {
+            return classes.count(context)
+        },
+        classesN1: (obj, args, context) => {
+            return classes.countNivel(context,1)
+        },
+        classesN2: (obj, args, context) => {
+            return classes.countNivel(context,2)
+        },
+        classesN3: (obj, args, context) => {
+            return classes.countNivel(context,3)
+        },
+        classesN4: (obj, args, context) => {
+            return classes.countNivel(context,4)
         }
     }
 };
