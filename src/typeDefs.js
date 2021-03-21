@@ -100,6 +100,15 @@ const types = gql`
         diplomaTipo: String!
     }
 
+    type ClasseTree {
+        _key: String!
+        codigo: String!
+        titulo: String!
+        id: String!
+        status: String
+        filhos: [ClasseTree]
+    }
+
     type Login {
         token: String!
         user: User!
@@ -117,6 +126,7 @@ const typeDefs = gql`
         legislacoes: [Legislacao!]!
         legislacao(_key: String!): Legislacao
         classes(tipo: String, nivel: Int, ents: [String!], tips: [String!]): [Classe!]!
+        classesTree: [ClasseTree]
     }
 
     type Mutation {

@@ -49,25 +49,80 @@ let buildFilter = (args) => {
     return aql.join(filters)
 
 }
+
 module.exports.list = (context, args) => {
-    let nivel = aql.literal('1..4')
-    if(args.nivel != null)
-        if(args.nivel >= 1 && args.nivel <= 4)
-            nivel = aql.literal(args.nivel)
-        else
-            throw new UserInputError('Nivel de processo invalido')
 
     let filter = buildFilter(args);
 
-    let query = aql`FOR v,e IN ${nivel} INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
+    let query = aql`FOR v,e IN 1..4 INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
                             FILTER e.rel == 'type' || e.rel == 'temPai'
                             ${filter}
                             return distinct v`
-    console.log(query.query)
+
     return context.db.query(aql`${query}`)
         .then(resp => resp.all()).then((list) => list)
         .catch(err => console.log(err))
 }
+
+
+//Add class to tree
+let addClasse = (classe,tree,codigo) => {
+    if(tree == null) tree = []
+    
+    if(codigo.length == 1){
+        tree.push(classe)
+        return tree
+    }
+    
+    tree.forEach(clTree => {
+        let codigoTree = clTree.codigo.split('.')
+        if(codigoTree[codigoTree.length-1] == codigo[0]){
+            codigo.shift()
+            clTree.filhos = addClasse(classe, clTree.filhos,codigo)
+        }
+    })
+
+    return tree;
+}
+
+//Convert retrieved list to tree format
+let listToTree = (list) => {
+    let tree;
+    let classesPorNivel = [[],[],[],[]] //Used to sert classes by level to build tree
+
+    //Sort das classes por nível
+    list.forEach(cl => {
+        let classArray = cl.codigo.split('.')
+        classesPorNivel[classArray.length-1].push(cl)
+    })
+
+    //Build tree
+    tree = classesPorNivel[0]
+    for (let i = 1; i < classesPorNivel.length; i++) { // Percoreer classes por nivel ignorando o primeiro nivel
+        classesPorNivel[i].forEach(classe => {
+            tree = addClasse(classe, tree,classe.codigo.split('.'))
+        })
+    }
+    
+    return tree
+}
+
+module.exports.tree = (context, args) => {
+
+    let filter = buildFilter(args);
+
+    let query = aql`FOR v,e IN 1..4 INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
+                            FILTER e.rel == 'type' || e.rel == 'temPai'
+                            ${filter}
+                            return distinct v`
+
+
+    return context.db.query(aql`${query}`)
+        .then(resp => resp.all()).then((list) => listToTree(list))
+        .catch(err => console.log(err))
+}
+
+
 
 /*
 module.exports.find = (db, id) => {

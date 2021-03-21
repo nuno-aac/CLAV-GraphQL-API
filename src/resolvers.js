@@ -27,6 +27,9 @@ const resolvers = {
         classes: (obj, args, context) => {
             return classes.list(context,args)
         },
+        classesTree: (obj, args, context) => {
+            return classes.tree(context, args)
+        },
     },
     Mutation: {
         registerUser: (obj, args, context) => {
