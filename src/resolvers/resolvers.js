@@ -1,7 +1,8 @@
-const entidades = require('./controllers/entidades')
-const legislacoes = require('./controllers/legislacoes')
-const classes = require('./controllers/classes')
-const users = require('./controllers/users')
+const entidades = require('../controllers/entidades')
+const legislacoes = require('../controllers/legislacoes')
+const classes = require('../controllers/classes')
+const users = require('../controllers/users')
+const indicadoresResolvers = require('../resolvers/indicadoresResolvers')
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -48,23 +49,7 @@ const resolvers = {
             return entidades.add(context,args.ent)
         }
     },
-    Indicadores: {
-        classes: (obj, args, context) => {
-            return classes.count(context)
-        },
-        classesN1: (obj, args, context) => {
-            return classes.countNivel(context,1)
-        },
-        classesN2: (obj, args, context) => {
-            return classes.countNivel(context,2)
-        },
-        classesN3: (obj, args, context) => {
-            return classes.countNivel(context,3)
-        },
-        classesN4: (obj, args, context) => {
-            return classes.countNivel(context,4)
-        }
-    }
+    Indicadores: indicadoresResolvers
 };
 
 module.exports = resolvers

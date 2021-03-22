@@ -2,7 +2,7 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { Database } = require("arangojs");
 const typeDefs = require('./src/typeDefs')
-const resolvers = require('./src/resolvers')
+const resolvers = require('./src/resolvers/resolvers')
 var jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser")
 

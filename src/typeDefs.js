@@ -120,6 +120,23 @@ const types = gql`
         classesN2: Int!
         classesN3: Int!
         classesN4: Int!
+        relTemRelProc: Int!
+        relEAntecessorDe: Int!
+        relEComplementarDe: Int!
+        relECruzadoCom: Int!
+        relESinteseDe: Int!
+        relESintetizadoPor: Int!
+        relESuplementoDe: Int!
+        relESuplementoPara: Int!
+        relTemDono: Int!
+        relTemParticipante: Int!
+        relTemParticipanteApreciador: Int!
+        relTemParticipanteComunicador: Int!
+        relTemParticipanteDecisor: Int!
+        relTemParticipanteAssessor: Int!
+        relTemParticipanteIniciador: Int!
+        relTemParticipanteExecutor: Int!
+        relTemLegislacao: Int!
     }
 
 `
