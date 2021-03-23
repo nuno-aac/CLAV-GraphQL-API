@@ -132,12 +132,12 @@ module.exports.count = (context) => {
     let query = aql`LET n1  = (
                         FOR v1,e1 IN 1..4 INBOUND 'Nodes/Classe_N1' GRAPH 'Graph'
                         FILTER e1.rel == 'type' || e1.rel=='temPai'
-                        return v1
+                        return 1
                     )
-                    return {n: LENGTH(n1)}`
+                    return LENGTH(n1)`
 
     return context.db.query(aql`${query}`)
-        .then(resp => resp.all()).then((list) => list[0].n)
+        .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
 
@@ -146,12 +146,12 @@ module.exports.countNivel = (context,nivel) => {
     let query = aql`LET n1  = (
                         FOR v1,e1 IN 1 INBOUND 'Nodes/Classe_N${aqlNivel}' GRAPH 'Graph'
                         FILTER e1.rel == 'type' || e1.rel=='temPai'
-                        return v1
+                        return 1
                     )
-                    return {n: LENGTH(n1)}`
+                    return LENGTH(n1)`
 
     return context.db.query(aql`${query}`)
-        .then(resp => resp.all()).then((list) => list[0].n)
+        .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
 
