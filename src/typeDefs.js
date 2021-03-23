@@ -12,6 +12,11 @@ const outputs = gql`
         revogado: Int!,
         revogada: Int!
     }
+
+    type CritJust {
+        indicador: String!
+        valor: Int!
+    }
 `
 
 const inputs = gql`
@@ -156,6 +161,9 @@ const types = gql`
         leg: Int!
         legVigor: LegsVigor!
         tipologias: Int!
+        critJust: [CritJust!]!
+        critJustTotal: CritJust!
+        critJustEsp(crit: String!): CritJust!
     }
 
     ${outputs}

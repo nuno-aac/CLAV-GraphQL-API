@@ -3,6 +3,7 @@ const relacoes = require('../controllers/relacoes')
 const entidades = require('../controllers/entidades')
 const legislacoes = require('../controllers/legislacoes')
 const tipologias = require('../controllers/tipologias')
+const critJust = require('../controllers/critJust')
 
 const indicadores = {
     classes: (obj, args, context) => {
@@ -85,7 +86,17 @@ const indicadores = {
     },
     tipologias:  (obj, args, context) => {
         return tipologias.countTip(context)
-    } 
+    },
+    critJust: (obj, args, context) => {
+        return critJust.countCritJust(context)
+    },
+    critJustTotal: (obj, args, context) => {
+        return critJust.countCritJustTotal(context)
+    },
+    critJustEsp: (obj, args, context) => {
+        return critJust.countCritJustEsp(context, args.crit)
+    }
+
 }
 
 module.exports = indicadores;
