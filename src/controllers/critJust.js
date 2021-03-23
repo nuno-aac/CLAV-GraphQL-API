@@ -81,6 +81,11 @@ module.exports.countCritJustTotal = (context) => {
         .catch(err => console.log(err))
 }
 
+///////////////////////////////////////////////////////////
+/*FOR v,e IN 1 INBOUND 'Nodes/DestinoFinal' GRAPH 'Graph'
+                        FILTER e.rel == 'type'
+                        RETURN v*/
+
 module.exports.countCritJustEsp = (context,arg) => {
     let aqlCrit = aql.literal(arg)
     return context.db.query(aql`Let s = (FOR v,e IN 1 INBOUND 'Nodes/CriterioJustificacao${aqlCrit}' GRAPH 'Graph'
