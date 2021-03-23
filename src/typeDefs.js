@@ -1,5 +1,19 @@
 const { gql } = require('apollo-server-express');
 
+const outputs = gql`
+    type EntsEstado {
+        ativas: Int!,
+        inativas: Int!,
+        emHarmonizacao: Int!
+    }
+
+    type LegsVigor {
+        ativo: Int!,
+        revogado: Int!,
+        revogada: Int!
+    }
+`
+
 const inputs = gql`
     input UserInput {
         _key: String
@@ -114,18 +128,6 @@ const types = gql`
         user: User!
     }
 
-    type entsEstado {
-        ativas: Int!,
-        inativas: Int!,
-        emHarmonizacao: Int!
-    }
-
-    type legsVigor {
-        ativo: Int!,
-        revogado: Int!,
-        revogada: Int!
-    }
-
     type Indicadores {
         classes: Int!
         classesN1: Int!
@@ -150,11 +152,13 @@ const types = gql`
         relTemParticipanteExecutor: Int!
         relTemLegislacao: Int!
         entidades: Int!
-        entidadesAtivas: entsEstado!
+        entidadesAtivas: EntsEstado!
         leg: Int!
-        legVigor: legsVigor!
+        legVigor: LegsVigor!
         tipologias: Int!
     }
+
+    ${outputs}
 
 `
 
@@ -182,6 +186,8 @@ const typeDefs = gql`
     ${types}
 
     ${inputs}
+
+    
 `;
 
 module.exports = typeDefs
