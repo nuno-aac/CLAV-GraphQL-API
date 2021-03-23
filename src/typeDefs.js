@@ -114,6 +114,18 @@ const types = gql`
         user: User!
     }
 
+    type entsEstado {
+        ativas: Int!,
+        inativas: Int!,
+        emHarmonizacao: Int!
+    }
+
+    type legsVigor {
+        ativo: Int!,
+        revogado: Int!,
+        revogada: Int!
+    }
+
     type Indicadores {
         classes: Int!
         classesN1: Int!
@@ -137,6 +149,11 @@ const types = gql`
         relTemParticipanteIniciador: Int!
         relTemParticipanteExecutor: Int!
         relTemLegislacao: Int!
+        entidades: Int!
+        entidadesAtivas: entsEstado!
+        leg: Int!
+        legVigor: legsVigor!
+        tipologias: Int!
     }
 
 `

@@ -1,5 +1,8 @@
 const classes = require('../controllers/classes')
 const relacoes = require('../controllers/relacoes')
+const entidades = require('../controllers/entidades')
+const legislacoes = require('../controllers/legislacoes')
+const tipologias = require('../controllers/tipologias')
 
 const indicadores = {
     classes: (obj, args, context) => {
@@ -68,6 +71,21 @@ const indicadores = {
     relTemLegislacao: (obj, args, context) => {
         return relacoes.countRel(context, 'temLegislacao')
     },
+    entidades: (obj, args, context) => {
+        return entidades.countEnt(context)
+    },
+    entidadesAtivas: (obj, args, context) => {
+        return entidades.countEntEstado(context)
+    },
+    leg: (obj, args, context) => {
+        return legislacoes.countLeg(context)
+    },
+    legVigor:  (obj, args, context) => {
+        return legislacoes.countLegVigor(context)
+    },
+    tipologias:  (obj, args, context) => {
+        return tipologias.countTip(context)
+    } 
 }
 
 module.exports = indicadores;

@@ -27,3 +27,29 @@ module.exports.add = async (context, legislacao) => {
         .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
+
+module.exports.countLeg = (context) => {
+    return context.db.query(aql`Let n = (FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
+                                        FILTER e.rel == 'type'
+                                        RETURN v)
+                                return {l: LENGTH(n)}`)
+        .then(resp => resp.all()).then((list) => list[0].l)
+        .catch(err => console.log(err))
+}
+
+module.exports.countLegVigor = (context) => {
+    return context.db.query(aql`Let n1 = (FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
+                                         FILTER e.rel == 'type' && v.diplomaEstado == 'Ativo'
+                                         RETURN v)
+                                Let n2 = (FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
+                                         FILTER e.rel == 'type' && v.diplomaEstado == 'Revogada'
+                                         RETURN v)
+                                Let n3 =  (FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
+                                         FILTER e.rel == 'type' && v.diplomaEstado == 'Revogado'
+                                         RETURN v)                           
+                                return {ativo: LENGTH(n1), revogada: LENGTH(n2), revogado: LENGTH(n3)}`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+}
+
+
