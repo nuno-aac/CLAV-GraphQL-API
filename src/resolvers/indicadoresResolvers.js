@@ -4,6 +4,7 @@ const entidades = require('../controllers/entidades')
 const legislacoes = require('../controllers/legislacoes')
 const tipologias = require('../controllers/tipologias')
 const critJust = require('../controllers/critJust')
+const dfinais = require('../controllers/dfinais')
 
 const indicadores = {
     classes: (obj, args, context) => {
@@ -95,8 +96,13 @@ const indicadores = {
     },
     critJustEsp: (obj, args, context) => {
         return critJust.countCritJustEsp(context, args.crit)
+    },
+    destFinal: (obj, args, context) => {
+        return dfinais.countdfs(context)
+    },
+    destFinalEsp: (obj, args, context) => {
+        return dfinais.countdfsEsp(context, args.pn)
     }
-
 }
 
 module.exports = indicadores;
