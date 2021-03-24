@@ -7,6 +7,39 @@ const critJust = require('../controllers/critJust')
 const dfinais = require('../controllers/dfinais')
 
 const indicadores = {
+    entidades: (obj, args, context) => {
+        return entidades.countEnt(context)
+    },
+    entidadesAtivas: (obj, args, context) => {
+        return entidades.countEntEstado(context)
+    },
+    leg: (obj, args, context) => {
+        return legislacoes.countLeg(context)
+    },
+    legVigor:  (obj, args, context) => {
+        return legislacoes.countLegVigor(context)
+    },
+    tipologias:  (obj, args, context) => {
+        return tipologias.countTip(context)
+    },
+    critJust: (obj, args, context) => {
+        return critJust.countCritJust(context)
+    },
+    critJustTotal: (obj, args, context) => {
+        return critJust.countCritJustTotal(context)
+    },
+    critJustEsp: (obj, args, context) => {
+        return critJust.countCritJustEsp(context, args.crit)
+    },
+    destFinal: (obj, args, context) => {
+        return dfinais.countdfs(context)
+    },
+    destFinalEsp: (obj, args, context) => {
+        return dfinais.countdfsEsp(context, args.pn)
+    }
+}
+
+const indicadoresClasses = {
     classes: (obj, args, context) => {
         return classes.count(context)
     },
@@ -22,6 +55,9 @@ const indicadores = {
     classesN4: (obj, args, context) => {
         return classes.countNivel(context, 4)
     },
+}
+
+const indicadoresRelacoes = {
     relTemRelProc: (obj, args, context) => {
         return relacoes.countRel(context, 'temRelProc')
     },
@@ -73,36 +109,10 @@ const indicadores = {
     relTemLegislacao: (obj, args, context) => {
         return relacoes.countRel(context, 'temLegislacao')
     },
-    entidades: (obj, args, context) => {
-        return entidades.countEnt(context)
-    },
-    entidadesAtivas: (obj, args, context) => {
-        return entidades.countEntEstado(context)
-    },
-    leg: (obj, args, context) => {
-        return legislacoes.countLeg(context)
-    },
-    legVigor:  (obj, args, context) => {
-        return legislacoes.countLegVigor(context)
-    },
-    tipologias:  (obj, args, context) => {
-        return tipologias.countTip(context)
-    },
-    critJust: (obj, args, context) => {
-        return critJust.countCritJust(context)
-    },
-    critJustTotal: (obj, args, context) => {
-        return critJust.countCritJustTotal(context)
-    },
-    critJustEsp: (obj, args, context) => {
-        return critJust.countCritJustEsp(context, args.crit)
-    },
-    destFinal: (obj, args, context) => {
-        return dfinais.countdfs(context)
-    },
-    destFinalEsp: (obj, args, context) => {
-        return dfinais.countdfsEsp(context, args.pn)
-    }
 }
 
-module.exports = indicadores;
+module.exports.indicadores = indicadores;
+
+module.exports.classes = indicadoresClasses;
+
+module.exports.relacoes = indicadoresRelacoes;

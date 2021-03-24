@@ -17,6 +17,34 @@ const outputs = gql`
         indicador: String!
         valor: Int!
     }
+
+    type IndicadoresClasses {
+        classes: Int!
+        classesN1: Int!
+        classesN2: Int!
+        classesN3: Int!
+        classesN4: Int!
+    }
+
+    type IndicadoresRelacoes {
+        relTemRelProc: Int!
+        relEAntecessorDe: Int!
+        relEComplementarDe: Int!
+        relECruzadoCom: Int!
+        relESinteseDe: Int!
+        relESintetizadoPor: Int!
+        relESuplementoDe: Int!
+        relESuplementoPara: Int!
+        relTemDono: Int!
+        relTemParticipante: Int!
+        relTemParticipanteApreciador: Int!
+        relTemParticipanteComunicador: Int!
+        relTemParticipanteDecisor: Int!
+        relTemParticipanteAssessor: Int!
+        relTemParticipanteIniciador: Int!
+        relTemParticipanteExecutor: Int!
+        relTemLegislacao: Int!
+    }
 `
 
 const inputs = gql`
@@ -63,6 +91,15 @@ const inputs = gql`
         diplomaSumario: String!,
         diplomaTipo: String!
     }
+
+    input ClasseInput {
+        _key: String!
+        nivel: Int!
+        pai: String
+        codigo: String!
+        titulo: String!
+        classeStatus: String
+    }
 `
 
 const types = gql`
@@ -93,8 +130,7 @@ const types = gql`
         _key: String!
         codigo: String!
         titulo: String!
-        id: String!
-        status: String
+        classeStatus: String
     }
 
     """Entidades são entidades no sistema"""
@@ -123,8 +159,7 @@ const types = gql`
         _key: String!
         codigo: String!
         titulo: String!
-        id: String!
-        status: String
+        classeStatus: String
         filhos: [ClasseTree]
     }
 
@@ -134,28 +169,8 @@ const types = gql`
     }
 
     type Indicadores {
-        classes: Int!
-        classesN1: Int!
-        classesN2: Int!
-        classesN3: Int!
-        classesN4: Int!
-        relTemRelProc: Int!
-        relEAntecessorDe: Int!
-        relEComplementarDe: Int!
-        relECruzadoCom: Int!
-        relESinteseDe: Int!
-        relESintetizadoPor: Int!
-        relESuplementoDe: Int!
-        relESuplementoPara: Int!
-        relTemDono: Int!
-        relTemParticipante: Int!
-        relTemParticipanteApreciador: Int!
-        relTemParticipanteComunicador: Int!
-        relTemParticipanteDecisor: Int!
-        relTemParticipanteAssessor: Int!
-        relTemParticipanteIniciador: Int!
-        relTemParticipanteExecutor: Int!
-        relTemLegislacao: Int!
+        classes: IndicadoresClasses!
+        relacoes: IndicadoresRelacoes!
         entidades: Int!
         entidadesAtivas: EntsEstado!
         leg: Int!
@@ -191,6 +206,7 @@ const typeDefs = gql`
         login(email: String!, password: String!): Login
         addlegislacao(leg: LegislacaoInput!): Legislacao
         addEntidade(ent: EntidadeInput!): Entidade
+        addClasse(classe: ClasseInput!): Classe
     }
 
     ${types}

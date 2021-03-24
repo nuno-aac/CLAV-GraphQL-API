@@ -32,7 +32,10 @@ const resolvers = {
             return classes.tree(context, args)
         },
         indicadores: () =>{
-            return {}  //Object will be filled in auxiliary resolvers bellow
+            return {//Object will be filled in auxiliary resolvers bellow
+                classes:{},
+                relacoes:{}
+            }  
         }
     },
     Mutation: {
@@ -47,9 +50,14 @@ const resolvers = {
         },
         addEntidade: (obj,args,context) => {
             return entidades.add(context,args.ent)
+        },
+        addClasse: (obj, args, context) => {
+            return classes.add(context, args.classe)
         }
     },
-    Indicadores: indicadoresResolvers
+    Indicadores: indicadoresResolvers.indicadores,
+    IndicadoresClasses: indicadoresResolvers.classes,
+    IndicadoresRelacoes: indicadoresResolvers.relacoes
 };
 
 module.exports = resolvers

@@ -163,16 +163,30 @@ module.exports.find = (db, id) => {
         .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
+*/
+module.exports.add = async (context, classe) => {
+    if(!(classe.nivel >= 1 && classe.nivel <= 4))
+        throw new UserInputError('Nivel de processo invalido')
 
-module.exports.add = async (db, entidade) => {
     //ADDING TYPE EDGE
-    let edge = { _from: "Nodes/" + entidade._key, _to: "Nodes/Entidade", rel: 'type' }
-    await db.query(aql`INSERT ${edge} INTO edges`)
+    let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/ClasseN"+classe.nivel, rel: 'type' }
+    await context.db.query(aql`INSERT ${edge} INTO edges`)
+
+
+    //ADDING PARENT EDGE
+    if(classe.pai){
+        let parentedge = { _from: "Nodes/" + classe._key, _to: "Nodes/" + classe.pai, rel: 'temPai' }
+        await context.db.query(aql`INSERT ${parentedge} INTO edges`)
+    }
+    else if(classe.nivel != 1)
+        throw new UserInputError('Insere processo pai para classes de nivel >= 1')
+    
+    delete classe.nivel
+    delete classe.pai
 
     //ADDING ENTIDADE
-    return db.query(aql`INSERT ${entidade} INTO Nodes
+    return context.db.query(aql`INSERT ${classe} INTO Nodes
                         LET inserted = NEW RETURN inserted`)
         .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
-*/
