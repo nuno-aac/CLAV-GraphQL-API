@@ -27,23 +27,23 @@ const outputs = gql`
     }
 
     type IndicadoresRelacoes {
-        relTemRelProc: Int!
-        relEAntecessorDe: Int!
-        relEComplementarDe: Int!
-        relECruzadoCom: Int!
-        relESinteseDe: Int!
-        relESintetizadoPor: Int!
-        relESuplementoDe: Int!
-        relESuplementoPara: Int!
-        relTemDono: Int!
-        relTemParticipante: Int!
-        relTemParticipanteApreciador: Int!
-        relTemParticipanteComunicador: Int!
-        relTemParticipanteDecisor: Int!
-        relTemParticipanteAssessor: Int!
-        relTemParticipanteIniciador: Int!
-        relTemParticipanteExecutor: Int!
-        relTemLegislacao: Int!
+        temRelProc: Int!
+        eAntecessorDe: Int!
+        eComplementarDe: Int!
+        eCruzadoCom: Int!
+        eSinteseDe: Int!
+        eSintetizadoPor: Int!
+        eSuplementoDe: Int!
+        eSuplementoPara: Int!
+        temDono: Int!
+        temParticipante: Int!
+        temParticipanteApreciador: Int!
+        temParticipanteComunicador: Int!
+        temParticipanteDecisor: Int!
+        temParticipanteAssessor: Int!
+        temParticipanteIniciador: Int!
+        temParticipanteExecutor: Int!
+        temLegislacao: Int!
     }
 `
 

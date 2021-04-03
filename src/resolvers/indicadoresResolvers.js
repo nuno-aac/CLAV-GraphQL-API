@@ -58,55 +58,55 @@ const indicadoresClasses = {
 }
 
 const indicadoresRelacoes = {
-    relTemRelProc: (obj, args, context) => {
+    temRelProc: (obj, args, context) => {
         return relacoes.countRel(context, 'temRelProc')
     },
-    relEAntecessorDe: (obj, args, context) => {
+    eAntecessorDe: (obj, args, context) => {
         return relacoes.countRel(context, 'eAntecessorDe')
     },
-    relEComplementarDe: (obj, args, context) => {
+    eComplementarDe: (obj, args, context) => {
         return relacoes.countRel(context, 'eComplementarDe')
     },
-    relECruzadoCom: (obj, args, context) => {
+    eCruzadoCom: (obj, args, context) => {
         return relacoes.countRel(context, 'eCruzadoCom')
     },
-    relESinteseDe: (obj, args, context) => {
+    eSinteseDe: (obj, args, context) => {
         return relacoes.countRel(context, 'eSinteseDe')
     },
-    relESintetizadoPor: (obj, args, context) => {
+    eSintetizadoPor: (obj, args, context) => {
         return relacoes.countRel(context, 'eSintetizadoPor')
     },
-    relESuplementoDe: (obj, args, context) => {
+    eSuplementoDe: (obj, args, context) => {
         return relacoes.countRel(context, 'eSuplementoDe')
     },
-    relESuplementoPara: (obj, args, context) => {
+    eSuplementoPara: (obj, args, context) => {
         return relacoes.countRel(context, 'eSuplementoPara')
     },
-    relTemDono: (obj, args, context) => {
+    temDono: (obj, args, context) => {
         return relacoes.countRel(context, 'temDono')
     },
-    relTemParticipante: (obj, args, context) => {
+    temParticipante: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipante')
     },
-    relTemParticipanteApreciador: (obj, args, context) => {
+    temParticipanteApreciador: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipanteApreciador')
     },
-    relTemParticipanteComunicador: (obj, args, context) => {
+    temParticipanteComunicador: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipanteComunicador')
     },
-    relTemParticipanteDecisor: (obj, args, context) => {
+    temParticipanteDecisor: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipanteDecisor')
     },
-    relTemParticipanteAssessor: (obj, args, context) => {
+    temParticipanteAssessor: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipanteAssessor')
     },
-    relTemParticipanteIniciador: (obj, args, context) => {
+    temParticipanteIniciador: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipanteIniciador')
     },
-    relTemParticipanteExecutor: (obj, args, context) => {
+    temParticipanteExecutor: (obj, args, context) => {
         return relacoes.countRel(context, 'temParticipanteExecutor')
     },
-    relTemLegislacao: (obj, args, context) => {
+    temLegislacao: (obj, args, context) => {
         return relacoes.countRel(context, 'temLegislacao')
     },
 }
