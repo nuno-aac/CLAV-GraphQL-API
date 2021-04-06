@@ -24,6 +24,8 @@ let buildSemanticFilter = (context,rel) => {
         .catch(err => console.log(err))
 }
 
+module.exports.buildSemanticFilter = buildSemanticFilter
+
 module.exports.countRel = async (context,rel) => {
     let filter;
     if (rel == 'temRelProc' || rel == 'temParticipante'){

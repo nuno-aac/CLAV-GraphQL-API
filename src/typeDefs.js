@@ -125,6 +125,34 @@ const types = gql`
         password: String!
     }
 
+    type Tipologia {
+        _key: String!
+        estado: String!
+        designacao: String!
+        participante: [ParticipanteTipologia!]!
+        dono: [DonoTipologia!]!
+        entidade: [EntidadeTipologia!]!
+    }
+
+    type ParticipanteTipologia {
+        _key: String!
+        codigo: String!
+        tipoPar: String!
+        titulo: String!
+    }
+
+    type DonoTipologia {
+        _key: String!
+        codigo: String!
+        titulo: String!
+    }
+
+    type EntidadeTipologia {
+        designacao: String!
+        _key: String!
+        sigla: String!
+    }
+
     """Classes representam classes no sistema"""
     type Classe {
         _key: String!
@@ -196,6 +224,7 @@ const typeDefs = gql`
         entidade(_key: String!): Entidade
         legislacoes: [Legislacao!]!
         legislacao(_key: String!): Legislacao
+        tipologia(_key: String!): Tipologia
         classes(tipo: String, nivel: Int, ents: [String!], tips: [String!]): [Classe!]!
         classesTree: [ClasseTree]
         indicadores: Indicadores!
