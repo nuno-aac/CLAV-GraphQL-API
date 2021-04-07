@@ -1,5 +1,6 @@
 const { UserInputError } = require("apollo-server-errors");
 const { aql } = require("arangojs");
+const { buildSemanticFilter } = require('../controllers/relacoes')
 
 let buildFilter = (args) => {
     if (Object.keys(args).length == 0) return aql``
@@ -164,6 +165,94 @@ module.exports.find = (db, id) => {
         .catch(err => console.log(err))
 }
 */
+
+module.exports.getPai = (context,id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                FILTER e.rel == 'temPai'
+                                RETURN v`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+}
+
+module.exports.getTermosIndice = (context,id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 INBOUND '${node}' GRAPH 'Graph'
+                                FILTER e.rel == 'estaAssocClasse'
+                                RETURN v`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.getProcessoTipoVC = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'processoTipoVC'
+                                    return v.prefLabel`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+}
+
+module.exports.getDonos = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                FILTER e.rel == 'temDono'
+                                RETURN v`)
+        .then(resp => resp.all()).then((list) => {
+            let retList = []
+            list.forEach((dono) =>{
+                if (dono._key.substring(0, 3) == 'tip') {
+                    dono.tipo = "Tipologia"
+                    dono.designacao = dono.tipDesignacao
+                    dono.sigla = dono.tipSigla
+                    retList.push(dono)
+                } else if (dono._key.substring(0, 3) == 'ent') {
+                    dono.tipo = "Entidade"
+                    dono.designacao = dono.entDesignacao
+                    dono.sigla = dono.entSigla
+                    retList.push(dono)
+                }
+            })
+            return retList
+        })
+        .catch(err => console.log(err))
+}
+
+module.exports.getParticipantes = async (context, id) => {
+    let node = "Nodes/" + id
+    let filter = await buildSemanticFilter(context,"temParticipante")
+    filter = aql.literal(filter)
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,rel IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                ${filter}
+                                RETURN {participante:v,tipo:rel.rel}`)
+        .then(resp => resp.all()).then((list) => {
+            let retList = []
+            list.forEach((el) => {
+                let part = el.participante
+                if (part._key.substring(0, 3) == 'tip') {
+                    part.idTipo = "Tipologia"
+                    part.designacao = part.tipDesignacao
+                    part.sigla = part.tipSigla
+                    part.participLabel = el.tipo.substring(15,el.tipo.length)
+                    retList.push(part)
+                } else if (part._key.substring(0, 3) == 'ent') {
+                    part.idTipo = "Entidade"
+                    part.designacao = part.entDesignacao
+                    part.sigla = part.entSigla
+                    part.participLabel = el.tipo.substring(15, el.tipo.length)
+                    retList.push(part)
+                }
+            })
+            return retList
+        })
+        .catch(err => console.log(err))
+}
+
 module.exports.add = async (context, classe) => {
     if(!(classe.nivel >= 1 && classe.nivel <= 4))
         throw new UserInputError('Nivel de processo invalido')

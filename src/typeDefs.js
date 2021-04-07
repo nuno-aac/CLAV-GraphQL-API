@@ -156,9 +156,41 @@ const types = gql`
     """Classes representam classes no sistema"""
     type Classe {
         _key: String!
+        pai: PaiClasse!
+        nivel: Int!
         codigo: String!
         titulo: String!
         classeStatus: String
+        termosInd: [TermosIndiceClasse!]!
+        tipoProc: String
+        processoTransversal: String
+        donos: [DonoClasse!]!
+        participantes: [ParticipanteClasse!]!
+    }
+
+    type PaiClasse {
+        codigo: String
+        titulo: String
+    }
+
+    type TermosIndiceClasse {
+        _key: String!
+        termo: String!
+    }
+
+    type DonoClasse {
+        _key: String!
+        tipo: String!
+        sigla: String!
+        designacao: String!
+    }
+
+    type ParticipanteClasse {
+        _key: String!
+        participLabel: String!
+        sigla: String!
+        designacao: String!
+        idTipo: String!
     }
 
     """Entidades são entidades no sistema"""

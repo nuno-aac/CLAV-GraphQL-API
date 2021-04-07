@@ -5,6 +5,7 @@ const users = require('../controllers/users')
 const tipologias = require('../controllers/tipologias')
 const indicadoresResolvers = require('./indicadoresResolvers')
 const tipologiasResolvers = require('./tipologiasResolvers')
+const classesResolvers = require('./classesResolvers')
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -64,6 +65,7 @@ const resolvers = {
     IndicadoresClasses: indicadoresResolvers.classes,
     IndicadoresRelacoes: indicadoresResolvers.relacoes,
     Tipologia: tipologiasResolvers,
+    Classe: classesResolvers
 };
 
 module.exports = resolvers
