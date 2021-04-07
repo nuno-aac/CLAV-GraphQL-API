@@ -1,0 +1,40 @@
+version: '3.7'
+networks:
+  isolation-network:
+    driver: bridge
+
+services:
+  arangodb_db_container:
+    image: arangodb:latest
+    restart: always
+    environment:
+      ARANGO_ROOT_PASSWORD: coficofi1
+    ports:
+      - 8529:8529
+      - 4001:4000
+    volumes:
+      - arangodb_data_container:/var/lib/arangodb3
+      - arangodb_apps_data_container:/var/lib/arangodb3-apps
+      - ./CLAV-GraphQL-API/povoamento:/home
+    networks:
+      - isolation-network
+
+  node:
+    image: "node:current"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./CLAV-GraphQL-API:/home/node/app
+    ports:
+      - 4000:4000
+      - 8530:8529
+    command: sh -c "npm install && npm start"
+    #command after ready: cd povoamento; node arango.js
+    networks:
+      - isolation-network
+
+volumes:
+  arangodb_data_container:
+  arangodb_apps_data_container:

@@ -1,0 +1,17 @@
+{
+  "name": "arango-test",
+  "version": "1.0.0",
+  "description": "Test for importing rdf data to arango",
+  "main": "arango.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node arango.js"
+  },
+  "author": "nuno-aac",
+  "license": "ISC",
+  "dependencies": {
+    "arangojs": "^7.2.0",
+    "graphy": "^4.3.3"
+  }
+}
