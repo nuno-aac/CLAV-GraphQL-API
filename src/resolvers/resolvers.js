@@ -3,7 +3,8 @@ const legislacoes = require('../controllers/legislacoes')
 const classes = require('../controllers/classes')
 const users = require('../controllers/users')
 const tipologias = require('../controllers/tipologias')
-const indicadoresResolvers = require('../resolvers/indicadoresResolvers')
+const indicadoresResolvers = require('./indicadoresResolvers')
+const tipologiasResolvers = require('./tipologiasResolvers')
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -62,17 +63,7 @@ const resolvers = {
     Indicadores: indicadoresResolvers.indicadores,
     IndicadoresClasses: indicadoresResolvers.classes,
     IndicadoresRelacoes: indicadoresResolvers.relacoes,
-    Tipologia: {
-        dono: (obj, args, context) => {
-            return tipologias.getDonos(context, obj._key)
-        },
-        participante: (obj, args, context) => {
-            return tipologias.getParticipantes(context, obj._key)
-        },
-        entidade: (obj, args, context) => {
-            return tipologias.getEntidades(context, obj._key)
-        },
-    }
+    Tipologia: tipologiasResolvers,
 };
 
 module.exports = resolvers

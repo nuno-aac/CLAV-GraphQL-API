@@ -24,11 +24,9 @@ module.exports.getParticipantes = async (context, id) => {
     let filter = await buildSemanticFilter(context, 'temParticipante')
     node = aql.literal(node)
     filter = aql.literal(filter)
-    let query = aql`FOR v,rel IN 1 INBOUND '${node}' GRAPH 'Graph'
+    return context.db.query(aql`FOR v,rel IN 1 INBOUND '${node}' GRAPH 'Graph'
                                     ${filter}
-                                    RETURN {_key: v._key,titulo: v.titulo,codigo: v.codigo}`
-                                    console.log(query)
-    return context.db.query(query)
+                                    RETURN {_key: v._key,titulo: v.titulo,codigo: v.codigo}`)
         .then(resp => resp.all()).then((list) => list)
         .catch(err => console.log(err))
 }
