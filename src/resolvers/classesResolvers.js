@@ -19,6 +19,30 @@ const classesResolvers = {
     participantes: (obj, args, context) => {
         return classes.getParticipantes(context, obj._key)
     },
+    filhos: (obj, args, context) => {
+        return classes.getFilhos(context, obj._key)
+    },
+    notasAp: (obj, args, context) => {
+        return classes.getNotasAp(context, obj._key)
+    },
+    exemplosNotasAp: (obj, args, context) => {
+        return classes.getExemplosNotasAp(context, obj._key)
+    },
+    notasEx: (obj, args, context) => {
+        return classes.getNotasEx(context, obj._key)
+    },
+    temSubclasses4Nivel: (obj, args, context) => {
+        return classes.has4Nivel(context, obj._key)
+    },
+    temSubclasses4NivelDF: (obj, args, context) => {
+        return classes.has4NivelDF(context, obj._key)
+    },
+    temSubclasses4NivelPCA: (obj, args, context) => {
+        return classes.has4NivelPCA(context, obj._key)
+    },
+    processosRelacionados: (obj, args, context) => {
+        return classes.getProcRel(context, obj._key)
+    },
 }
 
 module.exports = classesResolvers;

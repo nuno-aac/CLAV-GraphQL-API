@@ -166,6 +166,14 @@ const types = gql`
         processoTransversal: String
         donos: [DonoClasse!]!
         participantes: [ParticipanteClasse!]!
+        filhos: [FilhoClasse!]!
+        notasAp: [NotaApClasse!]!
+        exemplosNotasAp: [ExemplosNotaApClasse!]!
+        notasEx: [NotaExClasse!]!
+        temSubclasses4Nivel: Boolean!
+        temSubclasses4NivelDF: Boolean!
+        temSubclasses4NivelPCA: Boolean!
+        processosRelacionados: [ProcRelClasse!]!
     }
 
     type PaiClasse {
@@ -191,6 +199,36 @@ const types = gql`
         sigla: String!
         designacao: String!
         idTipo: String!
+    }
+
+    type FilhoClasse {
+        codigo: String!
+        titulo: String!
+        _key: String!
+        status: String!
+    }
+
+    type NotaApClasse {
+        _key: String!
+        nota: String!
+    }
+
+    type ExemplosNotaApClasse {
+        _key: String!
+        nota: String!
+    }
+
+    type NotaExClasse {
+        _key: String!
+        nota: String!
+    }
+
+    type ProcRelClasse {
+        codigo: String!
+        tipoRel: String!
+        titulo: String!
+        _key: String!
+        status: String!
     }
 
     """Entidades são entidades no sistema"""

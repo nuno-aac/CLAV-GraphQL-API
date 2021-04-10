@@ -253,6 +253,140 @@ module.exports.getParticipantes = async (context, id) => {
         .catch(err => console.log(err))
 }
 
+module.exports.getFilhos = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 INBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temPai'
+                                    return {_key: v._key, status: v.classeStatus, codigo: v.codigo, titulo: v.titulo}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.getNotasAp = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temNotaAplicacao'
+                                    return {_key: v._key, nota: v.conteudo}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.getExemplosNotasAp = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temExemploNA'
+                                    return {_key: v._key, nota: v.conteudo}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.getNotasEx = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temNotaExclusao'
+                                    return {_key: v._key, nota: v.conteudo}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.has4Nivel = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    if(id.split('.').length != 3)
+        return false
+
+    return context.db.query(aql`FOR v,e IN 1 INBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temPai'
+                                    return v._key`)
+        .then(resp => resp.all()).then((list) => { return list.length > 0 })
+        .catch(err => console.log(err))
+}
+
+module.exports.has4NivelDF = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    if (id.split('.').length != 3)
+        return false
+
+    return context.db.query(aql`let n1 = (FOR v,e IN 1 INBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temPai'
+                                    return v._id)
+
+                                let dfs = (FOR node IN n1
+                                    FOR v,e IN 1 OUTBOUND node GRAPH 'Graph'
+                                        FILTER e.rel == 'temDF'
+                                        return v)
+
+                                return LENGTH(dfs) > 0`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+}
+
+module.exports.has4NivelPCA = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    if (id.split('.').length != 3)
+        return false
+
+    return context.db.query(aql`let n1 = (FOR v,e IN 1 INBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temPai'
+                                    return v._id)
+
+                                let pcas = (FOR node IN n1
+                                    FOR v,e IN 1 OUTBOUND node GRAPH 'Graph'
+                                        FILTER e.rel == 'temPCA'
+                                        return v)
+
+                                return LENGTH(pcas) > 0`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+}
+
+module.exports.getProcRel = async (context, id) => {
+    let node = "Nodes/" + id
+    let filter = await buildSemanticFilter(context, "temRelProc")
+    filter = aql.literal(filter)
+    node = aql.literal(node)
+    return context.db.query(aql`let outbounds = (FOR v,rel IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    ${filter}
+                                    return {proc:v, rel:rel.rel})
+
+                                let inbounds = (FOR v,rel IN 1 INBOUND '${node}' GRAPH 'Graph'
+                                    ${filter}
+                                    return {proc:v, rel:concat('Nodes/',rel.rel)})
+
+                                let inboundsInverse = (FOR inb IN inbounds
+                                    FOR v,e IN 1 ANY inb.rel GRAPH 'Graph'
+                                        FILTER e.rel == 'inverseOf'
+                                        return {proc:inb.proc, rel:v._key})
+
+                                let inboundsSymmetric = (FOR inb IN inbounds
+                                    FOR v,e IN 1 ANY inb.rel GRAPH 'Graph'
+                                        FILTER e.rel == 'type' && e._to == 'Nodes/SymmetricProperty'
+                                        return {proc:inb.proc, rel:SUBSTRING(inb.rel, 6)})
+
+                                FOR v IN UNIQUE(APPEND(APPEND(inboundsInverse,outbounds),inboundsSymmetric))
+                                    RETURN v`)
+        .then(resp => resp.all()).then((list) => {
+            list = list.map(elem => {
+                let processo = elem.proc
+                if(!processo) return null;
+                console.log(processo.codigo)
+                processo.tipoRel = elem.rel
+                return processo;
+            })
+            list = list.filter(elem => elem != null)
+            return list
+        })
+        .catch(err => console.log(err))
+}
+
+
+
 module.exports.add = async (context, classe) => {
     if(!(classe.nivel >= 1 && classe.nivel <= 4))
         throw new UserInputError('Nivel de processo invalido')
