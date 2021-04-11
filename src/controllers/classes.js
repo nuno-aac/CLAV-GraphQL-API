@@ -398,7 +398,7 @@ module.exports.getLegislacao = (context, id) => {
 module.exports.getDF = (context, id) => {
     let node = "Nodes/" + id
     node = aql.literal(node)
-    return context.db.query(aql`let df = (FOR v,e IN 1 OUTBOUND 'Nodes/c100.10.002' GRAPH 'Graph'
+    return context.db.query(aql`let df = (FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
     FILTER e.rel == 'temDF'
     RETURN {_key: v._key, valor: v.dfValor, rel: concat('Nodes/',v._key)})
     
@@ -422,28 +422,18 @@ module.exports.getDF = (context, id) => {
         FILTER e.rel == 'critTemLegAssoc'
         RETURN {legId: v._key})
         
-    let tipoID = (for c in critJust
-        FOR v,e IN 1 OUTBOUND c.rel GRAPH 'Graph'
-        FILTER e.rel == 'type' && v!= null
-        RETURN v._key)
-
     let buildList = (
         let justificacao = []
             for ct in critJust
-                return PUSH(justificacao, {tipoId: tipoID, conteudo: ct.conteudo, criterio: ct._key, processos: procRel, legislacao: legAssoc}))
-        
+                LET tipoID = (FOR v,e IN 1 OUTBOUND ct.rel GRAPH 'Graph'
+                    FILTER e.rel == 'type' && v!= null
+                    RETURN v._key)
+                return FIRST(PUSH(justificacao, {tipoId: FIRST(tipoID), conteudo: ct.conteudo, criterio: ct._key, processos: procRel, legislacao: legAssoc})))
+    
     for d in df
         for j in just
-            return {idJust: j._key, valor: d.valor, _key: d._key, justificacao: buildList}
-    
-    
-    
-    
-
-
-
-`)
-        .then(resp => resp.all()).then((list) => list)
+            return {idJust: j._key, valor: d.valor, _key: d._key, justificacao: buildList}`)
+        .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
 
