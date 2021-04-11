@@ -174,6 +174,9 @@ const types = gql`
         temSubclasses4NivelDF: Boolean!
         temSubclasses4NivelPCA: Boolean!
         processosRelacionados: [ProcRelClasse!]!
+        legislacao: [LegislacaoClasse!]!
+        df: DfClasse
+        pca: PcaClasse
     }
 
     type PaiClasse {
@@ -229,6 +232,37 @@ const types = gql`
         titulo: String!
         _key: String!
         status: String!
+    }
+
+    type LegislacaoClasse {
+        tipo: String!
+        sumario: String!
+        numero: String!
+        _key: String!
+    }
+
+    type DfClasse {
+        idJust: String!
+        valor: String!
+        _key: String!
+        justificacao: [CritJustClasse!]!
+    }
+
+    type PcaClasse {
+        formaContagem: String!
+        _key: String!
+        idJust: String!
+        notas: String!
+        valores: String!
+        justificacao: [CritJustClasse!]!
+    }
+
+    type CritJustClasse {
+        tipoId: String!
+        conteudo: String!
+        criterio: String!
+        processos: String!
+        legislacao: String!
     }
 
     """Entidades são entidades no sistema"""

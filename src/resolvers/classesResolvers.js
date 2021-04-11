@@ -43,6 +43,15 @@ const classesResolvers = {
     processosRelacionados: (obj, args, context) => {
         return classes.getProcRel(context, obj._key)
     },
+    legislacao: (obj, args, context) => {
+        return classes.getLegislacao(context, obj._key)
+    },
+    df: (obj, args, context) => {
+        return classes.getDF(context, obj._key)
+    },
+    pca: (obj, args, context) => {
+        return classes.getPCA(context, obj._key)
+    },
 }
 
 module.exports = classesResolvers;

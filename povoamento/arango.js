@@ -61,6 +61,11 @@ fs.createReadStream('clav.ttl')
                     edges.save({_from: "Nodes/" + sub, _to: "Nodes/" + obj,rel:pred})
                         .catch(err => console.log('[ERROR EDGE] ' + sub + '->' + pred + '->' + obj +'----------\n ' + err + '\n-------------------------------------\n'))
                 }
+                db.query(aql`UPSERT { _key:${sub} }
+                             INSERT { _key:${sub} }
+                             UPDATE {} IN Nodes OPTIONS { exclusive: true }`)
+                    .catch(err => console.log('[ERROR Nodes]' + sub + ' -> ' + pred + ' -> ' + object.value + '----------\n ' + err + '\n-------------------------------------\n'))
+
             }
         }
         else{

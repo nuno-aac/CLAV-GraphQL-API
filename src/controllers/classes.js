@@ -375,7 +375,6 @@ module.exports.getProcRel = async (context, id) => {
             list = list.map(elem => {
                 let processo = elem.proc
                 if(!processo) return null;
-                console.log(processo.codigo)
                 processo.tipoRel = elem.rel
                 return processo;
             })
@@ -385,6 +384,35 @@ module.exports.getProcRel = async (context, id) => {
         .catch(err => console.log(err))
 }
 
+module.exports.getLegislacao = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temLegislacao'
+                                    RETURN {tipo: v.diplomaTipo, numero: v.diplomaNumero, _key: v._key, sumario: v.diplomaSumario}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.getDF = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temLegislacao'
+                                    RETURN {tipo: v.diplomaTipo, numero: v.diplomaNumero, _key: v._key, sumario: v.diplomaSumario}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
+
+module.exports.getPCA = (context, id) => {
+    let node = "Nodes/" + id
+    node = aql.literal(node)
+    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+                                    FILTER e.rel == 'temLegislacao'
+                                    RETURN {tipo: v.diplomaTipo, numero: v.diplomaNumero, _key: v._key, sumario: v.diplomaSumario}`)
+        .then(resp => resp.all()).then((list) => list)
+        .catch(err => console.log(err))
+}
 
 
 module.exports.add = async (context, classe) => {
