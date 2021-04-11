@@ -394,12 +394,55 @@ module.exports.getLegislacao = (context, id) => {
         .catch(err => console.log(err))
 }
 
+//c100.10.002 tem 2 justificações (teste)
 module.exports.getDF = (context, id) => {
     let node = "Nodes/" + id
     node = aql.literal(node)
-    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
-                                    FILTER e.rel == 'temLegislacao'
-                                    RETURN {tipo: v.diplomaTipo, numero: v.diplomaNumero, _key: v._key, sumario: v.diplomaSumario}`)
+    return context.db.query(aql`let df = (FOR v,e IN 1 OUTBOUND 'Nodes/c100.10.002' GRAPH 'Graph'
+    FILTER e.rel == 'temDF'
+    RETURN {_key: v._key, valor: v.dfValor, rel: concat('Nodes/',v._key)})
+    
+    let just = (FOR cdf IN df
+        FOR v,e IN 1 OUTBOUND cdf.rel GRAPH 'Graph'
+        FILTER e.rel == 'temJustificacao'
+        RETURN {_key: v._key, rel: concat('Nodes/',v._key)})
+        
+    let critJust = (FOR crt IN just
+        FOR v,e IN 1 OUTBOUND crt.rel GRAPH 'Graph'
+        FILTER e.rel == 'temCriterio'
+        RETURN {_key: v._key, conteudo: v.conteudo, rel: concat('Nodes/',v._key)})
+
+    let procRel = (FOR c IN critJust
+        FOR v,e IN 1 OUTBOUND c.rel GRAPH 'Graph'
+        FILTER e.rel == 'critTemProcRel'
+        RETURN {procId: v._key})
+
+    let legAssoc = (FOR c IN critJust
+        FOR v,e IN 1 OUTBOUND c.rel GRAPH 'Graph'
+        FILTER e.rel == 'critTemLegAssoc'
+        RETURN {legId: v._key})
+        
+    let tipoID = (for c in critJust
+        FOR v,e IN 1 OUTBOUND c.rel GRAPH 'Graph'
+        FILTER e.rel == 'type' && v!= null
+        RETURN v._key)
+
+    let buildList = (
+        let justificacao = []
+            for ct in critJust
+                return PUSH(justificacao, {tipoId: tipoID, conteudo: ct.conteudo, criterio: ct._key, processos: procRel, legislacao: legAssoc}))
+        
+    for d in df
+        for j in just
+            return {idJust: j._key, valor: d.valor, _key: d._key, justificacao: buildList}
+    
+    
+    
+    
+
+
+
+`)
         .then(resp => resp.all()).then((list) => list)
         .catch(err => console.log(err))
 }

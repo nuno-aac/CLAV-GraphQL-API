@@ -261,8 +261,16 @@ const types = gql`
         tipoId: String!
         conteudo: String!
         criterio: String!
-        processos: String!
-        legislacao: String!
+        processos: [ProcID!]!
+        legislacao: [LegID!]!
+    }
+
+    type ProcID {
+        procId: String!
+    }
+
+    type LegID {
+        legId: String!
     }
 
     """Entidades são entidades no sistema"""

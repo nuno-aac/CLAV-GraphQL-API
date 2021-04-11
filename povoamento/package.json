@@ -11,7 +11,9 @@
   "author": "nuno-aac",
   "license": "ISC",
   "dependencies": {
-    "arangojs": "^7.2.0",
-    "graphy": "^4.3.3"
+    "@graphy/content.ttl.read": "^4.3.3",
+    "arangojs": "^7.4.0",
+    "graphy": "^4.3.3",
+    "remove-accents": "^0.4.2"
   }
 }

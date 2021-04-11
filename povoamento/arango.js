@@ -1,6 +1,7 @@
 import arangojs, { aql, Database } from "arangojs";
 import fs from 'fs'
 import ttl_read from '@graphy/content.ttl.read'
+import accents from 'remove-accents'
 /*
 const db = new Database({
     url: "http://localhost:8529",
@@ -9,7 +10,9 @@ const db = new Database({
 });
 */
 
-let db = new Database({ url: "http://arangodb_db_container:8529", auth: { username: "root", password: "coficofi1" },});
+//http://localhost:8529 --> localhost
+//http://arangodb_db_container:8529 --> docker
+let db = new Database({ url: "http://localhost:8529", auth: { username: "root", password: "coficofi1" },});
 
 db.listDatabases()
     .then(data => console.log(data))
@@ -43,20 +46,19 @@ fs.createReadStream('clav.ttl')
             let object = y_quad.isolate().object
 
             if(object.termType == 'Literal'){
-                sub = sub.substring(1,sub.length)
-                pred = pred.substring(1, pred.length )
-
+                sub = accents.remove(sub.substring(1,sub.length))
+                pred = accents.remove(pred.substring(1, pred.length))
 
                 db.query(aql`UPSERT { _key:${sub} }
                              INSERT { _key:${sub}, ${pred}: ${object.value}}
                              UPDATE { ${pred}: ${object.value} } IN Nodes OPTIONS { exclusive: true }`)
                     .catch(err => console.log('[ERROR Nodes]' + sub + ' -> ' + pred + ' -> ' + object.value +'----------\n ' + err + '\n-------------------------------------\n'))
             } else {
-                sub = sub.substring(1, sub.length)
-                pred = pred.substring(1, pred.length)
+                sub = accents.remove(sub.substring(1,sub.length))
+                pred = accents.remove(pred.substring(1, pred.length))
                 if (object.value.match(/#.*$/) != null){
                     let obj = object.value.match(/#.*$/)[0]
-                    obj = obj.substring(1,obj.length)
+                    obj = accents.remove(obj.substring(1,obj.length))
 
                     edges.save({_from: "Nodes/" + sub, _to: "Nodes/" + obj,rel:pred})
                         .catch(err => console.log('[ERROR EDGE] ' + sub + '->' + pred + '->' + obj +'----------\n ' + err + '\n-------------------------------------\n'))
