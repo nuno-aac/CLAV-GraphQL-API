@@ -252,9 +252,9 @@ const types = gql`
     type PcaClasse {
         formaContagem: String!
         _key: String!
-        idJust: String!
-        notas: String!
-        valores: String!
+        idJust: String
+        notas: [String!]
+        valores: [String!]
         justificacao: [CritJustClasse!]!
     }
 

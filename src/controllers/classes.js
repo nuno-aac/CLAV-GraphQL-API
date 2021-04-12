@@ -427,21 +427,46 @@ let critComp =
 
 return (df!=null ? {idJust: just._key, valor: df.dfValor, nota:df.dfNota, _key: df._key, justificacao: critComp} : null)`
 )
-        .then(resp => resp.all()).then((list) => {
-            let ret = list[0]
-            if(ret!= null && ret.idJust == null) console.log(ret)
-            return ret
-        })
+        .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
 
 module.exports.getPCA = (context, id) => {
     let node = "Nodes/" + id
     node = aql.literal(node)
-    return context.db.query(aql`FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
-                                    FILTER e.rel == 'temLegislacao'
-                                    RETURN {tipo: v.diplomaTipo, numero: v.diplomaNumero, _key: v._key, sumario: v.diplomaSumario}`)
-        .then(resp => resp.all()).then((list) => list)
+    return context.db.query(aql`let pca = FIRST(FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+    FILTER e.rel == 'temPCA'
+    RETURN v)
+
+let just = FIRST(FOR v,e IN 1 OUTBOUND pca GRAPH 'Graph'
+    FILTER e.rel == 'temJustificacao'
+    RETURN v)
+
+let formaContagem = FIRST(FOR v,e IN 1 OUTBOUND pca GRAPH 'Graph'
+    FILTER e.rel == 'pcaFormaContagemNormalizada'
+    RETURN v.prefLabel)
+
+let critJust = (FOR v,e IN 1 OUTBOUND just GRAPH 'Graph'
+                    FILTER e.rel == 'temCriterio'
+                    RETURN v)
+
+let critComp =
+(FOR c IN critJust
+    let procSingle = (FOR v,e IN 1 OUTBOUND c GRAPH 'Graph'
+                            FILTER e.rel == 'critTemProcRel'
+                            RETURN {procId: v._key})
+                      let legSingle = (FOR v,e IN 1 OUTBOUND c GRAPH 'Graph'
+                            FILTER e.rel == 'critTemLegAssoc'
+                            RETURN {legId: v._key})
+                      LET tipoID = FIRST(FOR v,e IN 1 OUTBOUND c GRAPH 'Graph'
+                            FILTER e.rel == 'type' && v!= null
+                            RETURN v._key)
+                      return {tipoId: tipoID, criterio: c._key, conteudo: c.conteudo , processos: procSingle, legislacao: legSingle})
+
+
+return (pca!=null ? {justId: just._key, formaContagem: formaContagem, valores: pca.pcaValor, notas: pca.pcaNota, _key: pca._key, justificacao: critComp} : null)`
+)
+        .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
 }
 

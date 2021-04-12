@@ -56,7 +56,7 @@ fs.createReadStream('clav.ttl')
                 } else {
                     db.query(aql`UPSERT { _key:${sub} }
                                 INSERT { _key:${sub}, ${pred}: [${object.value}]}
-                                UPDATE { ${pred}: APPEND(OLD.${pred},${object.value}) } IN Nodes OPTIONS { exclusive: true }`)
+                                UPDATE { ${pred}: APPEND(OLD.${pred},[${object.value}]) } IN Nodes OPTIONS { exclusive: true }`)
                         .catch(err => console.log('[ERROR Nodes]' + sub + ' -> ' + pred + ' -> ' + object.value + '----------\n ' + err + '\n-------------------------------------\n'))
                 }
             } else {
