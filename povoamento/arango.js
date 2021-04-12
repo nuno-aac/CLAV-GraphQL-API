@@ -24,9 +24,9 @@ db = await db.createDatabase("Test", {
 db.database("Test");
 db.useBasicAuth("root", "coficofi1");
 
-db.createCollection('users')
-db.createCollection('Nodes')
-db.createEdgeCollection('edges')
+await db.createCollection('users')
+await db.createCollection('Nodes')
+await db.createEdgeCollection('edges')
 
 let edges = db.collection('edges')
 let nodes = db.collection('Nodes')
@@ -48,11 +48,17 @@ fs.createReadStream('clav.ttl')
             if(object.termType == 'Literal'){
                 sub = accents.remove(sub.substring(1,sub.length))
                 pred = accents.remove(pred.substring(1, pred.length))
-
-                db.query(aql`UPSERT { _key:${sub} }
-                             INSERT { _key:${sub}, ${pred}: ${object.value}}
-                             UPDATE { ${pred}: ${object.value} } IN Nodes OPTIONS { exclusive: true }`)
-                    .catch(err => console.log('[ERROR Nodes]' + sub + ' -> ' + pred + ' -> ' + object.value +'----------\n ' + err + '\n-------------------------------------\n'))
+                if(pred != "pcaNota" && pred != 'pcaValor'){
+                    db.query(aql`UPSERT { _key:${sub} }
+                                INSERT { _key:${sub}, ${pred}: ${object.value}}
+                                UPDATE { ${pred}: ${object.value} } IN Nodes OPTIONS { exclusive: true }`)
+                        .catch(err => console.log('[ERROR Nodes]' + sub + ' -> ' + pred + ' -> ' + object.value +'----------\n ' + err + '\n-------------------------------------\n'))
+                } else {
+                    db.query(aql`UPSERT { _key:${sub} }
+                                INSERT { _key:${sub}, ${pred}: [${object.value}]}
+                                UPDATE { ${pred}: APPEND(OLD.${pred},${object.value}) } IN Nodes OPTIONS { exclusive: true }`)
+                        .catch(err => console.log('[ERROR Nodes]' + sub + ' -> ' + pred + ' -> ' + object.value + '----------\n ' + err + '\n-------------------------------------\n'))
+                }
             } else {
                 sub = accents.remove(sub.substring(1,sub.length))
                 pred = accents.remove(pred.substring(1, pred.length))

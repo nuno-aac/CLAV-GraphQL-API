@@ -398,42 +398,40 @@ module.exports.getLegislacao = (context, id) => {
 module.exports.getDF = (context, id) => {
     let node = "Nodes/" + id
     node = aql.literal(node)
-    return context.db.query(aql`let df = (FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
+    return context.db.query(aql`
+let df = FIRST(FOR v,e IN 1 OUTBOUND '${node}' GRAPH 'Graph'
     FILTER e.rel == 'temDF'
-    RETURN {_key: v._key, valor: v.dfValor, rel: concat('Nodes/',v._key)})
-    
-    let just = (FOR cdf IN df
-        FOR v,e IN 1 OUTBOUND cdf.rel GRAPH 'Graph'
-        FILTER e.rel == 'temJustificacao'
-        RETURN {_key: v._key, rel: concat('Nodes/',v._key)})
-        
-    let critJust = (FOR crt IN just
-        FOR v,e IN 1 OUTBOUND crt.rel GRAPH 'Graph'
-        FILTER e.rel == 'temCriterio'
-        RETURN {_key: v._key, conteudo: v.conteudo, rel: concat('Nodes/',v._key)})
+    RETURN v)
 
-    let procRel = (FOR c IN critJust
-        FOR v,e IN 1 OUTBOUND c.rel GRAPH 'Graph'
-        FILTER e.rel == 'critTemProcRel'
-        RETURN {procId: v._key})
+let just = FIRST(FOR v,e IN 1 OUTBOUND df GRAPH 'Graph'
+    FILTER e.rel == 'temJustificacao'
+    RETURN v)
 
-    let legAssoc = (FOR c IN critJust
-        FOR v,e IN 1 OUTBOUND c.rel GRAPH 'Graph'
-        FILTER e.rel == 'critTemLegAssoc'
-        RETURN {legId: v._key})
-        
-    let buildList = (
-        let justificacao = []
-            for ct in critJust
-                LET tipoID = (FOR v,e IN 1 OUTBOUND ct.rel GRAPH 'Graph'
-                    FILTER e.rel == 'type' && v!= null
-                    RETURN v._key)
-                return FIRST(PUSH(justificacao, {tipoId: FIRST(tipoID), conteudo: ct.conteudo, criterio: ct._key, processos: procRel, legislacao: legAssoc})))
-    
-    for d in df
-        for j in just
-            return {idJust: j._key, valor: d.valor, _key: d._key, justificacao: buildList}`)
-        .then(resp => resp.all()).then((list) => list[0])
+let critJust = (FOR v,e IN 1 OUTBOUND just GRAPH 'Graph'
+                    FILTER e.rel == 'temCriterio'
+                    RETURN v)
+
+let critComp =
+(FOR c IN critJust
+    let procSingle = (FOR v,e IN 1 OUTBOUND c GRAPH 'Graph'
+                            FILTER e.rel == 'critTemProcRel'
+                            RETURN {procId: v._key})
+                      let legSingle = (FOR v,e IN 1 OUTBOUND c GRAPH 'Graph'
+                            FILTER e.rel == 'critTemLegAssoc'
+                            RETURN {legId: v._key})
+                      LET tipoID = FIRST(FOR v,e IN 1 OUTBOUND c GRAPH 'Graph'
+                            FILTER e.rel == 'type' && v!= null
+                            RETURN v._key)
+                      return {tipoId: tipoID, criterio: c._key, conteudo: c.conteudo , processos: procSingle, legislacao: legSingle})
+
+
+return (df!=null ? {idJust: just._key, valor: df.dfValor, nota:df.dfNota, _key: df._key, justificacao: critComp} : null)`
+)
+        .then(resp => resp.all()).then((list) => {
+            let ret = list[0]
+            if(ret!= null && ret.idJust == null) console.log(ret)
+            return ret
+        })
         .catch(err => console.log(err))
 }
 

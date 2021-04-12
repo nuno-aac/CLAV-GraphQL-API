@@ -242,9 +242,10 @@ const types = gql`
     }
 
     type DfClasse {
-        idJust: String!
+        idJust: String
         valor: String!
         _key: String!
+        nota: String
         justificacao: [CritJustClasse!]!
     }
 
