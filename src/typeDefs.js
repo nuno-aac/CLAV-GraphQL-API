@@ -1,331 +1,33 @@
 const { gql } = require('apollo-server-express');
+const classesModel = require('./models/classes')
+const legislacoesModel = require('./models/legislacoes')
+const entidadesModel = require('./models/entidades')
+const indicadoresModel = require('./models/indicadores')
+const usersModel = require('./models/users')
+const tipologiasModel = require('./models/tipologias')
 
 const outputs = gql`
-    type EntsEstado {
-        ativas: Int!,
-        inativas: Int!,
-        emHarmonizacao: Int!
-    }
+    ${classesModel.outputs}
 
-    type LegsVigor {
-        ativo: Int!,
-        revogado: Int!,
-        revogada: Int!
-    }
+    ${legislacoesModel.outputs}
 
-    type IndValor {
-        indicador: String!
-        valor: Int!
-    }
+    ${entidadesModel.outputs}
 
-    type IndicadoresClasses {
-        classes: Int!
-        classesN1: Int!
-        classesN2: Int!
-        classesN3: Int!
-        classesN4: Int!
-    }
+    ${indicadoresModel.outputs}
 
-    type IndicadoresRelacoes {
-        temRelProc: Int!
-        eAntecessorDe: Int!
-        eComplementarDe: Int!
-        eCruzadoCom: Int!
-        eSinteseDe: Int!
-        eSintetizadoPor: Int!
-        eSuplementoDe: Int!
-        eSuplementoPara: Int!
-        temDono: Int!
-        temParticipante: Int!
-        temParticipanteApreciador: Int!
-        temParticipanteComunicador: Int!
-        temParticipanteDecisor: Int!
-        temParticipanteAssessor: Int!
-        temParticipanteIniciador: Int!
-        temParticipanteExecutor: Int!
-        temLegislacao: Int!
-    }
+    ${usersModel.outputs}
+
+    ${tipologiasModel.outputs}
 `
 
 const inputs = gql`
-    input UserInput {
-        _key: String
-        username: String!
-        level: Int!
-        permissions: PermissionsInput!
-        internal: Boolean!
-        email: String!
-        local: LocalInput!
-        entidade: String!
-        notificacoes: [String!]!
-    }
+    ${classesModel.inputs}
 
-    input PermissionsInput {
-        LC: Boolean!
-        AE: Boolean!
-        ES: Boolean!
-    }
+    ${legislacoesModel.inputs}
 
-    input LocalInput {
-        password: String!
-    }
+    ${entidadesModel.inputs}
 
-    """Entidades são entidades no sistema"""
-    input EntidadeInput {
-        _key: String!,
-        entEstado: String!,
-        entSIOE: String!,
-        entSigla: String!,
-        entDataCriacao: String,
-        entDataExtincao: String,
-        entDesignacao: String!,
-        entInternacional: String!
-    }
-
-    input LegislacaoInput {
-        _key: String!,
-        diplomaData: String!,
-        diplomaEstado: String!,
-        diplomaLink: String!,
-        diplomaNumero: String!,
-        diplomaSumario: String!,
-        diplomaTipo: String!
-    }
-
-    input ClasseInput {
-        _key: String!
-        nivel: Int!
-        pai: String
-        codigo: String!
-        titulo: String!
-        classeStatus: String
-    }
-`
-
-const types = gql`
-    type User {
-        _key: String
-        username: String!
-        level: Int!
-        permissions: Permissions!
-        internal: Boolean!
-        email: String!
-        local: Local!
-        entidade: String!
-        notificacoes: [String!]!
-    }
-
-    type Permissions {
-        LC: Boolean!
-        AE: Boolean!
-        ES: Boolean!
-    }
-
-    type Local {
-        password: String!
-    }
-
-    type Tipologia {
-        _key: String!
-        estado: String!
-        designacao: String!
-        participante: [ParticipanteTipologia!]!
-        dono: [DonoTipologia!]!
-        entidade: [EntidadeTipologia!]!
-    }
-
-    type ParticipanteTipologia {
-        _key: String!
-        codigo: String!
-        tipoPar: String!
-        titulo: String!
-    }
-
-    type DonoTipologia {
-        _key: String!
-        codigo: String!
-        titulo: String!
-    }
-
-    type EntidadeTipologia {
-        designacao: String!
-        _key: String!
-        sigla: String!
-    }
-
-    """Classes representam classes no sistema"""
-    type Classe {
-        _key: String!
-        pai: PaiClasse!
-        nivel: Int!
-        codigo: String!
-        titulo: String!
-        classeStatus: String
-        termosInd: [TermosIndiceClasse!]!
-        tipoProc: String
-        processoTransversal: String
-        donos: [DonoClasse!]!
-        participantes: [ParticipanteClasse!]!
-        filhos: [FilhoClasse!]!
-        notasAp: [NotaApClasse!]!
-        exemplosNotasAp: [ExemplosNotaApClasse!]!
-        notasEx: [NotaExClasse!]!
-        temSubclasses4Nivel: Boolean!
-        temSubclasses4NivelDF: Boolean!
-        temSubclasses4NivelPCA: Boolean!
-        processosRelacionados: [ProcRelClasse!]!
-        legislacao: [LegislacaoClasse!]!
-        df: DfClasse
-        pca: PcaClasse
-    }
-
-    type PaiClasse {
-        codigo: String
-        titulo: String
-    }
-
-    type TermosIndiceClasse {
-        _key: String!
-        termo: String!
-    }
-
-    type DonoClasse {
-        _key: String!
-        tipo: String!
-        sigla: String!
-        designacao: String!
-    }
-
-    type ParticipanteClasse {
-        _key: String!
-        participLabel: String!
-        sigla: String!
-        designacao: String!
-        idTipo: String!
-    }
-
-    type FilhoClasse {
-        codigo: String!
-        titulo: String!
-        _key: String!
-        status: String!
-    }
-
-    type NotaApClasse {
-        _key: String!
-        nota: String!
-    }
-
-    type ExemplosNotaApClasse {
-        _key: String!
-        nota: String!
-    }
-
-    type NotaExClasse {
-        _key: String!
-        nota: String!
-    }
-
-    type ProcRelClasse {
-        codigo: String!
-        tipoRel: String!
-        titulo: String!
-        _key: String!
-        status: String!
-    }
-
-    type LegislacaoClasse {
-        tipo: String!
-        sumario: String!
-        numero: String!
-        _key: String!
-    }
-
-    type DfClasse {
-        idJust: String
-        valor: String!
-        _key: String!
-        nota: String
-        justificacao: [CritJustClasse!]!
-    }
-
-    type PcaClasse {
-        formaContagem: String
-        _key: String!
-        idJust: String
-        notas: [String!]
-        valores: [String!]
-        justificacao: [CritJustClasse!]!
-    }
-
-    type CritJustClasse {
-        tipoId: String!
-        conteudo: String!
-        criterio: String!
-        processos: [ProcID!]!
-        legislacao: [LegID!]!
-    }
-
-    type ProcID {
-        procId: String!
-    }
-
-    type LegID {
-        legId: String!
-    }
-
-    """Entidades são entidades no sistema"""
-    type Entidade {
-        _key: String!,
-        entEstado: String!,
-        entSIOE: String!,
-        entSigla: String!,
-        entDataCriacao: String,
-        entDataExtincao: String,
-        entDesignacao: String!,
-        entInternacional: String!
-    }
-
-    type Legislacao {
-        _key: String!,
-        diplomaData: String!,
-        diplomaEstado: String!,
-        diplomaLink: String!,
-        diplomaNumero: String!,
-        diplomaSumario: String!,
-        diplomaTipo: String!
-    }
-
-    type ClasseTree {
-        _key: String!
-        codigo: String!
-        titulo: String!
-        classeStatus: String
-        filhos: [ClasseTree]
-    }
-
-    type Login {
-        token: String!
-        user: User!
-    }
-
-    type Indicadores {
-        classes: IndicadoresClasses!
-        relacoes: IndicadoresRelacoes!
-        entidades: Int!
-        entidadesAtivas: EntsEstado!
-        leg: Int!
-        legVigor: LegsVigor!
-        tipologias: Int!
-        critJust: [IndValor!]!
-        critJustTotal: IndValor!
-        critJustEsp(crit: String!): IndValor!
-        destFinal: [IndValor!]!
-        destFinalEsp(pn: String!): IndValor!
-    }
-
-    ${outputs}
-
+    ${usersModel.inputs}
 `
 
 // Construct a schema, using GraphQL schema language
@@ -351,7 +53,7 @@ const typeDefs = gql`
         addClasse(classe: ClasseInput!): Classe
     }
 
-    ${types}
+    ${outputs}
 
     ${inputs}
 
