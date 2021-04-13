@@ -376,6 +376,7 @@ module.exports.getProcRel = async (context, id) => {
                 let processo = elem.proc
                 if(!processo) return null;
                 processo.tipoRel = elem.rel
+                processo.status = elem.proc.classeStatus
                 return processo;
             })
             list = list.filter(elem => elem != null)
