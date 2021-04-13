@@ -464,7 +464,7 @@ let critComp =
                       return {tipoId: tipoID, criterio: c._key, conteudo: c.conteudo , processos: procSingle, legislacao: legSingle})
 
 
-return (pca!=null ? {justId: just._key, formaContagem: formaContagem, valores: pca.pcaValor, notas: pca.pcaNota, _key: pca._key, justificacao: critComp} : null)`
+return (pca!=null ? {idJust: just._key, formaContagem: formaContagem, valores: pca.pcaValor, notas: pca.pcaNota, _key: pca._key, justificacao: critComp} : null)`
 )
         .then(resp => resp.all()).then((list) => list[0])
         .catch(err => console.log(err))
