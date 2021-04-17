@@ -9,6 +9,7 @@ const outputs = gql`
         codigo: String!
         titulo: String!
         classeStatus: String
+        descricao: String!
         termosInd: [TermosIndiceClasse!]!
         tipoProc: String
         processoTransversal: String
@@ -139,7 +140,119 @@ const inputs = gql`
         pai: String
         codigo: String!
         titulo: String!
+        descricao: String!
         classeStatus: String
+        termosInd: [TermosIndiceClasseInput!]!
+        tipoProc: String
+        processoTransversal: String
+        donos: [DonoClasseInput!]!
+        participantes: [ParticipanteClasseInput!]!
+        filhos: [FilhoClasseInput!]!
+        notasAp: [NotaApClasseInput!]!
+        exemplosNotasAp: [ExemplosNotaApClasseInput!]!
+        notasEx: [NotaExClasseInput!]!
+        temSubclasses4Nivel: Boolean!
+        temSubclasses4NivelDF: Boolean!
+        temSubclasses4NivelPCA: Boolean!
+        processosRelacionados: [ProcRelClasseInput!]!
+        legislacao: [LegislacaoClasseInput!]!
+        df: DfClasseInput
+        pca: PcaClasseInput
+    }
+
+    input PaiClasseInput {
+        codigo: String
+        titulo: String
+    }
+
+    input TermosIndiceClasseInput {
+        _key: String!
+        termo: String!
+    }
+
+    input DonoClasseInput {
+        _key: String!
+        tipo: String!
+        sigla: String!
+        designacao: String!
+    }
+
+    input ParticipanteClasseInput {
+        _key: String!
+        participLabel: String!
+        sigla: String!
+        designacao: String!
+        idTipo: String!
+    }
+
+    input FilhoClasseInput {
+        codigo: String!
+        titulo: String!
+        _key: String!
+        status: String!
+    }
+
+    input NotaApClasseInput {
+        _key: String!
+        nota: String!
+    }
+
+    input ExemplosNotaApClasseInput {
+        _key: String!
+        nota: String!
+    }
+
+    input NotaExClasseInput {
+        _key: String!
+        nota: String!
+    }
+
+    input ProcRelClasseInput {
+        codigo: String!
+        tipoRel: String!
+        titulo: String!
+        _key: String!
+        status: String!
+    }
+
+    input LegislacaoClasseInput {
+        tipo: String!
+        sumario: String!
+        numero: String!
+        _key: String!
+    }
+
+    input DfClasseInput {
+        idJust: String
+        valor: String!
+        _key: String!
+        nota: String
+        justificacao: [CritJustClasseInput!]!
+    }
+
+    input PcaClasseInput {
+        formaContagem: String
+        _key: String!
+        idJust: String
+        notas: [String!]
+        valores: [String!]
+        justificacao: [CritJustClasseInput!]!
+    }
+
+    input CritJustClasseInput {
+        tipoId: String!
+        conteudo: String!
+        criterio: String!
+        processos: [ProcIDInput!]!
+        legislacao: [LegIDInput!]!
+    }
+
+    input ProcIDInput {
+        procId: String!
+    }
+
+    input LegIDInput {
+        legId: String!
     }
 `
 module.exports.outputs = outputs;

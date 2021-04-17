@@ -1,4 +1,4 @@
-const { UserInputError } = require("apollo-server-errors");
+const { UserInputError, ApolloError } = require("apollo-server-errors");
 const { aql } = require("arangojs");
 const { buildSemanticFilter } = require('../controllers/relacoes')
 
@@ -472,22 +472,114 @@ return (pca!=null ? {idJust: just._key, formaContagem: formaContagem, valores: p
 }
 
 
+let addTermosIndice = (context, classe) => {
+    classe.termosIndice.forEach(elem => {
+        let ti = { _key: elem._key, termo: elem.termo, label: 'TI: ' + elem.termo, estado: 'Ativo' }
+        let tiTypeEdge = { _from: "Nodes/" + elem._key, _to: "Nodes/TermoIndice", rel: 'type' }
+        let assocClasse = { _from: "Nodes/" + elem._key, _to: "Nodes/" + classe._key, rel: 'estaAssocClasse' }
+        try {
+            context.db.query(aql`INSERT ${ti} INTO Nodes`)
+            context.db.query(aql`INSERT ${tiTypeEdge} INTO edges`)
+            context.db.query(aql`INSERT ${assocClasse} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir Termos Indice da Classe ' + classe._key)
+        }
+    })
+}
+
+module.exports.addTermosIndice = addTermosIndice
+
+let addPai = (context, classe) => {
+    if (classe.pai) {
+        let parentedge = { _from: "Nodes/" + classe._key, _to: "Nodes/c" + classe.pai.codigo, rel: 'temPai' }
+        if (classe.codigo.startsWith(classe.pai.codigo))
+            context.db.query(aql`INSERT ${parentedge} INTO edges`)
+        else
+            throw new UserInputError('Codigo de processo pai inváldio')
+    }
+    else if (classe.nivel != 1)
+        throw new UserInputError('Insere processo pai para classes de nivel >= 1')
+}
+
+module.exports.addPai = addPai
+
+let addDonos = (context, classe) => {
+    classe.donos.forEach(elem => {
+        let donoEdge = { _from: "Nodes/" + elem._key, _to: "Nodes/" + classe._key, rel: 'estaAssocClasse' }
+        try {
+            context.db.query(aql`INSERT ${donoEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir donos da Classe ' + classe._key)
+        }
+    })
+}
+
+module.exports.addDonos = addDonos
+
+let addParticipantes = (context, classe) => {
+    participantes.donos.forEach(elem => {
+        let participanteEdge = { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'tem' + elem.participLabel }
+        try {
+            context.db.query(aql`INSERT ${participanteEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir participantes da Classe ' + classe._key)
+        }
+    })
+}
+
+module.exports.addParticipantes = addParticipantes
+
 module.exports.add = async (context, classe) => {
+    //ADDING TYPE EDGE
     if(!(classe.nivel >= 1 && classe.nivel <= 4))
         throw new UserInputError('Nivel de processo invalido')
-
-    //ADDING TYPE EDGE
     let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/ClasseN"+classe.nivel, rel: 'type' }
     await context.db.query(aql`INSERT ${edge} INTO edges`)
 
+    /*
+        _key: DONE
+        nivel: DONE
+        pai: DONE
+        codigo: DONE
+        titulo: DONE
+        descricao: DONE
+        classeStatus: DONE
+        termosInd: DONE
+        tipoProc: 
+        processoTransversal: DONE
+        donos: DONE
+        participantes: DONE (Check comment in function call for "to do")
+        filhos: 
+        notasAp: 
+        exemplosNotasAp: 
+        notasEx: 
+        temSubclasses4Nivel: IGNORAR 
+        temSubclasses4NivelDF: IGNORAR
+        temSubclasses4NivelPCA: IGNORAR
+        processosRelacionados: 
+        legislacao: 
+        df: ?Duvidas
+        pca: ?Duvidas
+        
+        TO DO:
+        - (Check comment in function addParticipantes call for "to do")
+        - Check campo procDimQual e processoUniform (Não estão na lista mas deviam estar??)
+    */
+
 
     //ADDING PARENT EDGE
-    if(classe.pai){
-        let parentedge = { _from: "Nodes/" + classe._key, _to: "Nodes/" + classe.pai, rel: 'temPai' }
-        await context.db.query(aql`INSERT ${parentedge} INTO edges`)
-    }
-    else if(classe.nivel != 1)
-        throw new UserInputError('Insere processo pai para classes de nivel >= 1')
+    addPai(context,classe)
+
+    //ADDING TERMOS INDICE
+    addTermosIndice(context,classe)
+
+    //ADDING DONOS
+    addDonos(context,classe)
+
+    //ADDING PARTICIPANTES -> TO DO: CHECK IF ("tem" + participLabel) é subPropertyOf temParticipante
+    addParticipantes(context, classe)
+
+    
     
     delete classe.nivel
     delete classe.pai
