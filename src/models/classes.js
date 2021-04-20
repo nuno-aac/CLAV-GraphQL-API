@@ -137,7 +137,7 @@ const inputs = gql`
     input ClasseInput {
         _key: String!
         nivel: Int!
-        pai: String
+        pai: PaiClasseInput
         codigo: String!
         titulo: String!
         descricao: String!

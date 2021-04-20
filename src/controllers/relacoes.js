@@ -26,12 +26,14 @@ let buildSemanticFilter = (context,rel) => {
 
 module.exports.buildSemanticFilter = buildSemanticFilter
 
-let isSubPropertyOfRel = (context,sub,rel) => {
-    context.db.query(aql`let subProps = (FOR v,e IN 1 INBOUND 'Nodes/${rel}' GRAPH 'Graph'
+let isSubPropertyOfRel = async (context,sub,rel) => {
+    let subl = aql.literal(sub)
+    let rell = aql.literal(rel)
+    return context.db.query(aql`let subProps = (FOR v,e IN 1 INBOUND 'Nodes/${rell}' GRAPH 'Graph'
         FILTER e.rel == 'subPropertyOf'
         RETURN v._key)
 
-        return CONTAINS(subProps,'${sub}')`)
+        return CONTAINS(subProps,'${subl}')`)
         .then(resp => resp.all()).then(list => list[0])
         .catch(err => console.log(err))
 }

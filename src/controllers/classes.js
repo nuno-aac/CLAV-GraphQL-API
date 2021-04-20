@@ -475,7 +475,7 @@ return (pca!=null ? {idJust: just._key, formaContagem: formaContagem, valores: p
 // INSERT DE INFO
 
 let addTermosIndice = (context, classe) => {
-    classe.termosIndice.forEach(elem => {
+    classe.termosInd.forEach(elem => {
         let ti = { _key: elem._key, termo: elem.termo, label: 'TI: ' + elem.termo, estado: 'Ativo' }
         let tiTypeEdge = { _from: "Nodes/" + elem._key, _to: "Nodes/TermoIndice", rel: 'type' }
         let assocClasse = { _from: "Nodes/" + elem._key, _to: "Nodes/" + classe._key, rel: 'estaAssocClasse' }
@@ -507,7 +507,7 @@ module.exports.addPai = addPai
 
 let addDonos = (context, classe) => {
     classe.donos.forEach(elem => {
-        let donoEdge = { _from: "Nodes/" + elem._key, _to: "Nodes/" + classe._key, rel: 'estaAssocClasse' }
+        let donoEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/" + elem._key, rel: 'temDono' }
         try {
             context.db.query(aql`INSERT ${donoEdge} INTO edges`)
         } catch {
@@ -519,16 +519,17 @@ let addDonos = (context, classe) => {
 module.exports.addDonos = addDonos
 
 let addParticipantes = (context, classe) => {
-    classe.participantes.forEach(elem => {
-        let participanteEdge = { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'tem' + elem.participLabel }
-        if (isSubPropertyOfRel(context, elem.tipoRel, 'temParticipante'))
+    classe.participantes.forEach(async elem => {
+        let participanteEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/" + elem._key, rel: 'temParticipante' + elem.participLabel }
+        let isSP = await isSubPropertyOfRel(context, 'temParticipante' + elem.participLabel, 'temParticipante')
+        if (isSP)
             try {
                 context.db.query(aql`INSERT ${participanteEdge} INTO edges`)
             } catch {
                 throw new ApolloError('Erro ao inserir participantes da Classe ' + classe._key)
             }
         else
-            throw new UserInputError('Tipo de participante inválido: ' + participLabel)
+            throw new UserInputError('Tipo de participante inválido: ' + elem.participLabel)
     })
 }
 
@@ -612,10 +613,11 @@ let addNotasExclusao = (context, classe) => {
 
 module.exports.addNotasExclusao = addNotasExclusao
 
-let addProcRels = async (context, classe) => {
-    classe.processosRelacionados.forEach(elem => {
+let addProcRels = (context, classe) => {
+    classe.processosRelacionados.forEach(async elem => {
         let procRelEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/c" + elem.codigo, rel: elem.tipoRel }
-        if (isSubPropertyOfRel(context, elem.tipoRel, 'temRelProc'))
+        let isSP = await isSubPropertyOfRel(context, elem.tipoRel, 'temRelProc')
+        if (isSP)
             try {
                 context.db.query(aql`INSERT ${procRelEdge} INTO edges`)
             } catch {
@@ -712,7 +714,6 @@ module.exports.add = async (context, classe) => {
         - (Check comment in function addParticipantes call for "to do")
         - Check campo procDimQual e processoUniform (Não estão na lista mas deviam estar??)
     */
-
 
     //ADDING PARENT EDGE
     addPai(context,classe)
