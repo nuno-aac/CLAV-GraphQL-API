@@ -1,6 +1,6 @@
 const { UserInputError, ApolloError } = require("apollo-server-errors");
 const { aql } = require("arangojs");
-const { buildSemanticFilter } = require('../controllers/relacoes')
+const { buildSemanticFilter, isSubPropertyOfRel } = require('../controllers/relacoes')
 
 let buildFilter = (args) => {
     if (Object.keys(args).length == 0) return aql``
@@ -519,11 +519,14 @@ module.exports.addDonos = addDonos
 let addParticipantes = (context, classe) => {
     classe.participantes.forEach(elem => {
         let participanteEdge = { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'tem' + elem.participLabel }
-        try {
-            context.db.query(aql`INSERT ${participanteEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir participantes da Classe ' + classe._key)
-        }
+        if (isSubPropertyOfRel(context, elem.tipoRel, 'temParticipante'))
+            try {
+                context.db.query(aql`INSERT ${participanteEdge} INTO edges`)
+            } catch {
+                throw new ApolloError('Erro ao inserir participantes da Classe ' + classe._key)
+            }
+        else
+            throw new UserInputError('Tipo de participante inválido: ' + participLabel)
     })
 }
 
@@ -579,9 +582,9 @@ let addExemplosNotas = (context, classe) => {
     })
 }
 
-module.exports.addNotas = addNotas
+module.exports.addExemplosNotas = addExemplosNotas
 
-let addNotas = (context, classe) => {
+let addNotasExclusao = (context, classe) => {
     classe.notasEx.forEach(elem => {
         let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temNotaExclusao'}
         let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/NotaExclusao" + elem._key, rel: 'type'}
@@ -605,7 +608,23 @@ let addNotas = (context, classe) => {
     })
 }
 
-module.exports.addNotas = addNotas
+module.exports.addNotasExclusao = addNotasExclusao
+
+let addProcRels = async (context, classe) => {
+    classe.processosRelacionados.forEach(elem => {
+        let procRelEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/c" + elem.codigo, rel: elem.tipoRel }
+        if (isSubPropertyOfRel(context, elem.tipoRel, 'temRelProc'))
+            try {
+                context.db.query(aql`INSERT ${procRelEdge} INTO edges`)
+            } catch {
+                throw new ApolloError('Erro ao inserir processos relacionados da Classe ' + classe._key)
+            }
+        else
+            throw new UserInputError('Relação de processo inválida: ' + elem.tipoRel)
+    })
+}
+
+module.exports.addProcRels = addProcRels
 
 module.exports.add = async (context, classe) => {
     //ADDING TYPE EDGE
@@ -626,15 +645,15 @@ module.exports.add = async (context, classe) => {
         tipoProc: 
         processoTransversal: DONE
         donos: DONE
-        participantes: DONE (Check comment in function call for "to do")
+        participantes: DONE 
         filhos: 
-        notasAp: 
-        exemplosNotasAp: 
-        notasEx: 
+        notasAp: DONE
+        exemplosNotasAp: DONE
+        notasEx: DONE
         temSubclasses4Nivel: IGNORAR 
         temSubclasses4NivelDF: IGNORAR
         temSubclasses4NivelPCA: IGNORAR
-        processosRelacionados: 
+        processosRelacionados: DONE
         legislacao: 
         df: ?Duvidas
         pca: ?Duvidas
@@ -654,11 +673,16 @@ module.exports.add = async (context, classe) => {
     //ADDING DONOS
     addDonos(context,classe)
 
-    //ADDING PARTICIPANTES -> TO DO: CHECK IF ("tem" + participLabel) é subPropertyOf temParticipante
+    //ADDING PARTICIPANTES
     addParticipantes(context, classe)
 
-    //ADDING NOTASAP
+    //ADDING NOTAS
     addNotas(context,classe)
+    addExemplosNotas(context,classe)
+    addNotasExclusao(context, classe)
+
+    //ADDING PROCESSOS RELACIONADOS
+    addProcRels(context,classe)
 
     
     
