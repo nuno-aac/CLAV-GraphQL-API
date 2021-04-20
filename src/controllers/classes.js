@@ -32,7 +32,7 @@ let buildFilter = (args) => {
             } else {
                 filters.push(aql`|| v1._key == '${aql.literal(ent)}'`)
             }
-        });        
+        });
     }
 
     if (args.tips != null) {
@@ -75,12 +75,12 @@ module.exports.list = (context, args) => {
 //Add class to tree
 let addClasse = (classe,tree,codigo) => {
     if(tree == null) tree = []
-    
+
     if(codigo.length == 1){
         tree.push(classe)
         return tree
     }
-    
+
     tree.forEach(clTree => {
         let codigoTree = clTree.codigo.split('.')
         if(codigoTree[codigoTree.length-1] == codigo[0]){
@@ -110,7 +110,7 @@ let listToTree = (list) => {
             tree = addClasse(classe, tree,classe.codigo.split('.'))
         })
     }
-    
+
     return tree
 }
 
@@ -628,6 +628,54 @@ let addProcRels = async (context, classe) => {
 
 module.exports.addProcRels = addProcRels
 
+let addTipoProc = (context, classe) => {
+    if(classe.tipoProc == "Processo Específico"){
+        let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/vc_processoTipo_pe", rel: 'processoTipoVC' }
+        try {
+            context.db.query(aql`INSERT ${edge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir tipoProc da Classe ' + classe._key)
+        }
+    }
+    else if(classe.tipoProc == "Processo Comum"){
+        let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/vc_processoTipo_pc", rel: 'processoTipoVC' }
+        try {
+            context.db.query(aql`INSERT ${edge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir tipoProc da Classe ' + classe._key)
+        }
+    }
+}
+
+module.exports.addTipoProc = addTipoProc
+
+let addFilhos = (context, classe) => {
+    classe.filhos.forEach(kid => {
+        let filhoEdge = { _from: "Nodes/" + kid._key , _to: "Nodes/" + classe._key, rel: 'temPai' }
+        try {
+            context.db.query(aql`INSERT ${filhoEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir filhos da Classe ' + classe._key)
+        }
+    })
+}
+
+module.exports.addFilhos = addFilhos
+
+let addLegislacao = (context, classe) => {
+    classe.legislacao.forEach(leg => {
+        let legEdge = { _from: "Nodes/" + classe._key , _to: "Nodes/" + leg._key, rel: 'temLegislacao' }
+        try {
+            context.db.query(aql`INSERT ${legEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir Legislacao da Classe ' + classe._key)
+        }
+    })
+}
+
+module.exports.addLegislacao = addLegislacao
+
+
 module.exports.add = async (context, classe) => {
     //ADDING TYPE EDGE
     if(!(classe.nivel >= 1 && classe.nivel <= 4))
@@ -644,22 +692,22 @@ module.exports.add = async (context, classe) => {
         descricao: DONE
         classeStatus: DONE
         termosInd: DONE
-        tipoProc: 
+        tipoProc:
         processoTransversal: DONE
         donos: DONE
-        participantes: DONE 
-        filhos: 
+        participantes: DONE
+        filhos:
         notasAp: DONE
         exemplosNotasAp: DONE
         notasEx: DONE
-        temSubclasses4Nivel: IGNORAR 
+        temSubclasses4Nivel: IGNORAR
         temSubclasses4NivelDF: IGNORAR
         temSubclasses4NivelPCA: IGNORAR
         processosRelacionados: DONE
-        legislacao: 
+        legislacao:
         df: ?Duvidas
         pca: ?Duvidas
-        
+
         TO DO:
         - (Check comment in function addParticipantes call for "to do")
         - Check campo procDimQual e processoUniform (Não estão na lista mas deviam estar??)
@@ -686,8 +734,15 @@ module.exports.add = async (context, classe) => {
     //ADDING PROCESSOS RELACIONADOS
     addProcRels(context,classe)
 
-    
-    
+    //ADDING TIPOPROC
+    addTipoProc(context, classe)
+
+    //ADDING FILHOS
+    addFilhos(context, classe)
+
+    //AADING LEGISLACAO
+    addLegislacao(context, classe)
+
     delete classe.nivel
     delete classe.pai
 
