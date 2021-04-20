@@ -746,6 +746,21 @@ module.exports.add = async (context, classe) => {
 
     delete classe.nivel
     delete classe.pai
+    delete classe.termosInd
+    delete classe.donos
+    delete classe.participantes
+    delete classe.filhos
+    delete classe.notasAp
+    delete classe.exemplosNotasAp
+    delete classe.notasEx
+    delete classe.temSubclasses4Nivel
+    delete classe.temSubclassesPCA
+    delete classe.temSubclassesDF
+    delete classe.processosRelacionados
+    delete classe.legislacao
+    delete classe.df
+    delete classe.pca
+    delete classe.tipoProc
 
     //ADDING ENTIDADE
     return context.db.query(aql`INSERT ${classe} INTO Nodes
