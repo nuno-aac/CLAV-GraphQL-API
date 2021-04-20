@@ -7,6 +7,8 @@ var jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser")
 const NodeCache = require('node-cache')
 
+const cache = new NodeCache();
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -18,7 +20,6 @@ const server = new ApolloServer({
         } catch{
             user = null;
         }
-        const cache = new NodeCache();
 
         return {
             db: new Database({

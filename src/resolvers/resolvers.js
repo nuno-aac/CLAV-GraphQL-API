@@ -32,13 +32,17 @@ const resolvers = {
             return tipologias.find(context, args._key)
         },
         classes: async (obj, args, context) => {
-            classesCache = context.cache.get( "cache" );
+            let classesCache = context.cache.get( "cache" );
             if ( classesCache == undefined ){
-                var list = await classes.listFull(context,args)
-                console.log(list)
-                return list
+                console.log("Não Tinha Cache")
+                classes.listFull(context,args).then(list => {
+                    let s = context.cache.set('cache', list)
+                    console.log(s)
+                })
+                return classes.list(context,args)
             }
             else {
+                console.log("Tinha Cache")
                 return classesCache
             }
         },

@@ -51,7 +51,7 @@ let buildFilter = (args) => {
 
 }
 
-let list = (context, args) => {
+let listAll = (context, args) => {
     let nivel = aql.literal('1..4')
     if (args.nivel != null)
         if (args.nivel >= 1 && args.nivel <= 4)
@@ -71,10 +71,10 @@ let list = (context, args) => {
         .catch(err => console.log(err))
 }
 
-module.exports.list = list
+module.exports.list = listAll
 
 module.exports.listFull = async (context, args) => {
-    var lista = await list(context,args)
+    var lista = await listAll(context,args)
     return Promise.all(lista.map(async elem => {
         elem.pai = await this.getPai(context,elem._key)
         elem.termosInd = await this.getTermosIndice(context, elem._key)
