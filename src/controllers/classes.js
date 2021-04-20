@@ -517,7 +517,7 @@ let addDonos = (context, classe) => {
 module.exports.addDonos = addDonos
 
 let addParticipantes = (context, classe) => {
-    participantes.donos.forEach(elem => {
+    classe.participantes.forEach(elem => {
         let participanteEdge = { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'tem' + elem.participLabel }
         try {
             context.db.query(aql`INSERT ${participanteEdge} INTO edges`)
@@ -528,6 +528,84 @@ let addParticipantes = (context, classe) => {
 }
 
 module.exports.addParticipantes = addParticipantes
+
+let addNotas = (context, classe) => {
+    classe.notasAp.forEach(elem => {
+        let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temNotaAplicacao'}
+        let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/NotaAplicacao" + elem._key, rel: 'type'}
+        try {
+            context.db.query(aql`INSERT ${notaEdge} INTO edges`)
+            context.db.query(aql`INSERT ${notaTypeEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir NotasAp da Classe ' + classe._key)
+        }
+
+        let notaAp = {
+            _key: elem._key,
+            conteudo: elem.nota,
+            'rdfs:label': 'Nota de Aplicação'
+        }
+
+        context.db.query(aql`INSERT ${notaAp} INTO Nodes
+                        LET inserted = NEW RETURN inserted`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+    })
+}
+
+module.exports.addNotas = addNotas
+
+let addExemplosNotas = (context, classe) => {
+    classe.exemplosNotasAp.forEach(elem => {
+        let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temExemploNA'}
+        let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/ExemploNotaAplicacao" + elem._key, rel: 'type'}
+        try {
+            context.db.query(aql`INSERT ${notaEdge} INTO edges`)
+            context.db.query(aql`INSERT ${notaTypeEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir ExemplosNotasAp da Classe ' + classe._key)
+        }
+
+        let exNotaAp = {
+            _key: elem._key,
+            conteudo: elem.nota,
+            'rdfs:label': 'Exemplo de nota de Aplicação'
+        }
+
+        context.db.query(aql`INSERT ${exNotaAp} INTO Nodes
+                        LET inserted = NEW RETURN inserted`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+    })
+}
+
+module.exports.addNotas = addNotas
+
+let addNotas = (context, classe) => {
+    classe.notasEx.forEach(elem => {
+        let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temNotaExclusao'}
+        let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/NotaExclusao" + elem._key, rel: 'type'}
+        try {
+            context.db.query(aql`INSERT ${notaEdge} INTO edges`)
+            context.db.query(aql`INSERT ${notaTypeEdge} INTO edges`)
+        } catch {
+            throw new ApolloError('Erro ao inserir NotasEx da Classe ' + classe._key)
+        }
+
+        let notaEx = {
+            _key: elem._key,
+            conteudo: elem.nota,
+            'rdfs:label': 'Nota de Exclusao'
+        }
+
+        context.db.query(aql`INSERT ${notaEx} INTO Nodes
+                        LET inserted = NEW RETURN inserted`)
+        .then(resp => resp.all()).then((list) => list[0])
+        .catch(err => console.log(err))
+    })
+}
+
+module.exports.addNotas = addNotas
 
 module.exports.add = async (context, classe) => {
     //ADDING TYPE EDGE
@@ -578,6 +656,9 @@ module.exports.add = async (context, classe) => {
 
     //ADDING PARTICIPANTES -> TO DO: CHECK IF ("tem" + participLabel) é subPropertyOf temParticipante
     addParticipantes(context, classe)
+
+    //ADDING NOTASAP
+    addNotas(context,classe)
 
     
     
