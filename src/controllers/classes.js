@@ -472,6 +472,8 @@ return (pca!=null ? {idJust: just._key, formaContagem: formaContagem, valores: p
 }
 
 
+// INSERT DE INFO
+
 let addTermosIndice = (context, classe) => {
     classe.termosIndice.forEach(elem => {
         let ti = { _key: elem._key, termo: elem.termo, label: 'TI: ' + elem.termo, estado: 'Ativo' }
