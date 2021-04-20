@@ -5,6 +5,7 @@ const typeDefs = require('./src/typeDefs')
 const resolvers = require('./src/resolvers/resolvers')
 var jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser")
+const NodeCache = require('node-cache')
 
 const server = new ApolloServer({
     typeDefs,
@@ -17,6 +18,7 @@ const server = new ApolloServer({
         } catch{
             user = null;
         }
+        const cache = new NodeCache();
 
         return {
             db: new Database({
@@ -26,7 +28,8 @@ const server = new ApolloServer({
             }),
             user: user, //ADD USER INSIDE TOKEN
             res,
-            req
+            req,
+            cache
         }
     },
     playground: {

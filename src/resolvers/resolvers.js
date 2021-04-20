@@ -31,8 +31,16 @@ const resolvers = {
         tipologia: (obj, args, context) => {
             return tipologias.find(context, args._key)
         },
-        classes: (obj, args, context) => {
-            return classes.list(context,args)
+        classes: async (obj, args, context) => {
+            classesCache = context.cache.get( "cache" );
+            if ( classesCache == undefined ){
+                var list = await classes.listFull(context,args)
+                console.log(list)
+                return list
+            }
+            else {
+                return classesCache
+            }
         },
         classesTree: (obj, args, context) => {
             return classes.tree(context, args)

@@ -51,7 +51,7 @@ let buildFilter = (args) => {
 
 }
 
-module.exports.list = (context, args) => {
+let list = (context, args) => {
     let nivel = aql.literal('1..4')
     if (args.nivel != null)
         if (args.nivel >= 1 && args.nivel <= 4)
@@ -69,6 +69,32 @@ module.exports.list = (context, args) => {
     return context.db.query(aql`${query}`)
         .then(resp => resp.all()).then((list) => list)
         .catch(err => console.log(err))
+}
+
+module.exports.list = list
+
+module.exports.listFull = async (context, args) => {
+    var lista = await list(context,args)
+    return Promise.all(lista.map(async elem => {
+        elem.pai = await this.getPai(context,elem._key)
+        elem.termosInd = await this.getTermosIndice(context, elem._key)
+        elem.tipoProc = await this.getProcessoTipoVC(context,elem._key)
+        elem.donos = await this.getDonos(context,elem._key)
+        elem.participantes = await this.getParticipantes(context,elem._key)
+        elem.filhos = await this.getFilhos(context,elem._key)
+        elem.notasAp = await this.getNotasAp(context,elem._key)
+        elem.exemplosNotasAp = await this.getExemplosNotasAp(context,elem._key)
+        elem.notasEx = await this.getNotasEx(context,elem._key)
+        elem.temSubclasses4Nivel = await this.has4Nivel(context,elem._key)
+        elem.temSubclassesDF = await this.has4NivelDF(context,elem._key)
+        elem.temSubclassesPCA = await this.has4NivelPCA(context,elem._key)
+        elem.processosRelacionados = await this.getProcRel(context,elem._key)
+        elem.legislacao = await this.getLegislacao(context,elem._key)
+        elem.df = await this.getDF(context,elem._key)
+        elem.pca = await this.getPCA(context,elem._key)
+
+        return elem
+    }))
 }
 
 
