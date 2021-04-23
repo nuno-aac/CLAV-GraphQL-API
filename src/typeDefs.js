@@ -51,7 +51,10 @@ const typeDefs = gql`
         addlegislacao(leg: LegislacaoInput!): Legislacao
         addEntidade(ent: EntidadeInput!): Entidade
         addClasse(classe: ClasseInput!): Classe
+        importClasses(file: Upload!): Boolean!
     }
+    
+    scalar Upload
 
     ${outputs}
 

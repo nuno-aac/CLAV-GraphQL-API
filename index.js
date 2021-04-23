@@ -6,6 +6,12 @@ const resolvers = require('./src/resolvers/resolvers')
 var jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser")
 const NodeCache = require('node-cache')
+const { graphqlUploadExpress } = require("graphql-upload")
+
+
+const app = express();
+app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
+app.use(cookieParser());
 
 const cache = new NodeCache();
 
@@ -37,11 +43,11 @@ const server = new ApolloServer({
         settings: {
             'request.credentials': 'include',
         },
-    }
+    },
+    uploads: false
 });
 
-const app = express();
-app.use(cookieParser());
+
 server.applyMiddleware({ app });
 
 app.listen({ port: 4000 }, () =>
