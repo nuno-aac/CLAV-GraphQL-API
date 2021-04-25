@@ -1,278 +1,716 @@
-{
-    "_key": "c400.10.027",
-    "codigo": "400.10.027",
-    "titulo": "Emissão de passaportes",
-    "classeStatus": "A",
-    "nivel": 3,
-    "pai": {
-        "codigo": "400.10",
-        "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
-    },
-    "termosInd": [
-        {
-            "_key": "ti_tS1SRbmvtPw2yysd4qT45",
-            "termo": "Documentação de segurança no âmbito da emissão de passaporte"
+[
+    {
+        "_key": "c100.10.069",
+        "codigo": "100.10.069",
+        "titulo": "Emissão de passaportes",
+        "classeStatus": "A",
+        "nivel": 3,
+        "pai": {
+            "codigo": "100.10",
+            "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
         },
-        {
-            "_key": "ti_SaU5GLum9rQ4c7iLVp-Tl",
-            "termo": "Documento de viagem no âmbito da emissão de passaporte"
-        },
-        {
-            "_key": "ti_EzszaOqSluUg6y4eJSbhw",
-            "termo": "Emissão de passaporte comum"
-        },
-        {
-            "_key": "ti_x58DDhj9NBwC8MOf1dq2b",
-            "termo": "Emissão de passaporte diplomático"
-        },
-        {
-            "_key": "ti_SxLrpiLSBRsDzB4G5AKxl",
-            "termo": "Emissão de passaporte eletrónico português"
-        },
-        {
-            "_key": "ti_HisD9Y0q9ozUjIeGuGPGE",
-            "termo": "Emissão de passaporte especial"
-        },
-        {
-            "_key": "ti_WJ1Q-7zaSn47tvk0s7cYt",
-            "termo": "Emissão de passaporte temporário"
-        },
-        {
-            "_key": "ti_vxjzXelZ6tpRZVivifnfS",
-            "termo": "Passaporte comum, emissão de"
-        },
-        {
-            "_key": "ti_mP-utKvR1Q99IC6fUgfQv",
-            "termo": "Passaporte diplomático, emissão de"
-        },
-        {
-            "_key": "ti_C1frcmCrMVgbaMnRqLVzv",
-            "termo": "Passaporte eletrónico português, emissão de"
-        },
-        {
-            "_key": "ti_zhnhMdG4vrhPw7oTR7oco",
-            "termo": "Passaporte especial, emissão de"
-        },
-        {
-            "_key": "ti_72tW3buup9Ph0LBHN-EVH",
-            "termo": "Passaporte temporário, emissão de"
-        }
-    ],
-    "tipoProc": "Processo Específico",
-    "processoTransversal": "S",
-    "donos": [
-        {
-            "_key": "ent_SEF",
-            "tipo": "Entidade",
-            "sigla": "SEF",
-            "designacao": "Serviço de Estrangeiros e Fronteiras"
-        },
-        {
-            "_key": "ent_RA-A",
-            "tipo": "Entidade",
-            "sigla": "RA-A",
-            "designacao": "Região Autónoma dos Açores"
-        },
-        {
-            "_key": "ent_RA-M",
-            "tipo": "Entidade",
-            "sigla": "RA-M",
-            "designacao": "Região Autónoma da Madeira"
-        }
-    ],
-    "participantes": [
-        {
-            "_key": "ent_MJ",
-            "participLabel": "Comunicador",
-            "sigla": "MJ",
-            "designacao": "Ministro da Justiça",
-            "idTipo": "Entidade"
-        },
-        {
-            "_key": "ent_IRN",
-            "participLabel": "Assessor",
-            "sigla": "IRN",
-            "designacao": "Instituto dos Registos e do Notariado, IP",
-            "idTipo": "Entidade"
-        },
-        {
-            "_key": "tip_Cns",
-            "participLabel": "Iniciador",
-            "sigla": "Cns",
-            "designacao": "Consulados",
-            "idTipo": "Tipologia"
-        }
-    ],
-    "filhos": [],
-    "notasAp": [
-        {
-            "_key": "na_c400.10.027_83d-V3p_AGpDSzlxf8pxU",
-            "nota": "Emissão de documentos de viagem de cidadãos nacionais"
-        }
-    ],
-    "exemplosNotasAp": [],
-    "notasEx": [
-        {
-            "_key": "ne_c400.10.027_qEKL5IcHnK-xGFC8jXDQj",
-            "nota": "A emissão de documentos de viagem emitidos em favor de cidadãos estrangeiros, nomeadamente o passaporte para estrangeiros, o título de viagem para refugiados, o salvo-conduto, o documento de viagem para afastamento coercivo ou expulsão judicial de cidadãos nacionais de Estados terceiros, a lista de viagem para estudantes, deve ser considerada em 400.10.028 – Emissão de documentos de viagem a estrangeiros"
-        }
-    ],
-    "temSubclasses4Nivel": false,
-    "temSubclasses4NivelDF": false,
-    "temSubclasses4NivelPCA": false,
-    "processosRelacionados": [
-        {
-            "codigo": "400.10.001",
-            "tipoRel": "eSucessorDe"
-        },
-        {
-            "codigo": "400.10.025",
-            "tipoRel": "eSucessorDe"
-        },
-        {
-            "codigo": "400.10.041",
-            "tipoRel": "eSucessorDe"
-        },
-        {
-            "codigo": "500.40.500",
-            "tipoRel": "eAntecessorDe"
-        },
-        {
-            "codigo": "350.10.001",
-            "tipoRel": "eCruzadoCom"
-        }
-    ],
-    "legislacao": [
-        {
-            "_key": "leg_73N0CA3oxjOA0uxA2Ro-h",
-            "tipo": "DL",
-            "sumario": "Procede à sexta alteração ao Decreto-Lei n.º 83/2000, de 11 de maio, que aprovou o novo regime legal da concessão e emissão dos passaportes",
-            "numero": "54/2015"
-        },
-        {
-            "_key": "leg_T4UqXGG4DukBBjpexZOk5",
-            "tipo": "DL",
-            "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
-            "numero": "83/2000"
-        },
-        {
-            "_key": "leg_UsLh9P7LCiq1kXh1TeW3S",
-            "tipo": "DL",
-            "sumario": "Altera para 1 de Janeiro de 2001 a entrada em vigor do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o novo regime legal da concessão e emissão de passaportes",
-            "numero": "278/2000"
-        },
-        {
-            "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
-            "tipo": "DL",
-            "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
-            "numero": "108/2004"
-        },
-        {
-            "_key": "leg_UqtdvnrVaF0DK7tBakWm6",
-            "tipo": "Lei",
-            "sumario": "Primeira alteração ao Decreto-Lei n.º 108/2004, de 11 de Maio (altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes)",
-            "numero": "13/2005"
-        },
-        {
-            "_key": "leg_CEjw0JdvmwFLBZLyCDUDQ",
-            "tipo": "DL",
-            "sumario": "Quarta alteração ao Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
-            "numero": "138/2006"
-        },
-        {
-            "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
-            "tipo": "DL",
-            "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
-            "numero": "97/2011"
-        },
-        {
-            "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
-            "tipo": "DL",
-            "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
-            "numero": "97/2011"
-        },
-        {
-            "_key": "leg_Bx4uC07tQS3fZXd1bcRPd",
-            "tipo": "DL",
-            "sumario": "Aprova a estrutura orgânica e define as atribuições do Serviço de Estrangeiros e Fronteiras",
-            "numero": "252/2000"
-        },
-        {
-            "_key": "leg_BZWJ0p0-00AmfHgIJ1PgG",
-            "tipo": "DL",
-            "sumario": "Aprova o regime legal que regulamenta a base de dados de emissão dos passaportes",
-            "numero": "86/2000"
-        },
-        {
-            "_key": "leg_gXkBG0W41KF98NILnBHqV",
-            "tipo": "DL",
-            "sumario": "Primeira alteração ao Decreto-Lei n.º 86/2000, de 12 de Maio, que regula a organização e o funcionamento do sistema de informação do passaporte electrónico português",
-            "numero": "139/2006"
-        },
-        {
-            "_key": "leg_T4UqXGG4DukBBjpexZOk5",
-            "tipo": "DL",
-            "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
-            "numero": "83/2000"
-        },
-        {
-            "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
-            "tipo": "DL",
-            "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
-            "numero": "108/2004"
-        }
-    ],
-    "df": {
-        "idJust": "just_df_c400.10.027",
-        "valor": "E",
-        "_key": "df_c400.10.027",
-        "justificacao": [
+        "termosInd": [
             {
-                "criterio": "crit_just_df_c400.10.027_1",
-                "tipoId": "CriterioJustificacaoDensidadeInfo",
-                "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
-                "processos": [
-                    {
-                        "procId": "c400.10.001"
-                    },
-                    {
-                        "procId": "c300.30.008"
-                    }
-                ],
-                "legislacao": []
+                "_key": "ti_tS1SR234235w2yysd4qT45",
+                "termo": "Documentação de segurança no âmbito da emissão de passaporte"
             },
             {
-                "criterio": "crit_just_df_c400.10.027_2",
-                "tipoId": "CriterioJustificacaoLegal",
-                "conteudo": " [DL 86/2000], artº 12.",
-                "processos": [],
-                "legislacao": [
-                    {
-                        "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
-                    }
-                ]
+                "_key": "ti_SaU5GL23524c7iLVp-Tl",
+                "termo": "Documento de viagem no âmbito da emissão de passaporte"
             }
-        ]
-    },
-    "pca": {
-        "idJust": "just_pca_c400.10.027",
-        "valores": [
-            "20"
         ],
-        "_key": "pca_c400.10.027",
-        "notas": null,
-        "justificacao": [
+        "tipoProc": "Processo Específico",
+        "processoTransversal": "S",
+        "donos": [
             {
-                "criterio": "crit_just_pca_c400.10.027_1",
-                "tipoId": "CriterioJustificacaoLegal",
-                "conteudo": "[DL 86/2000], art.º 12º \"Os dados pessoais são conservados até 10 anos após a última emissão do passaporte do seu titular e durante 20 anos em ficheiro histórico após a data da última emissão de passaportes.\"",
-                "processos": [],
-                "legislacao": [
-                    {
-                        "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
-                    }
-                ]
+                "_key": "ent_SEF",
+                "tipo": "Entidade",
+                "sigla": "SEF",
+                "designacao": "Serviço de Estrangeiros e Fronteiras"
+            },
+            {
+                "_key": "ent_RA-A",
+                "tipo": "Entidade",
+                "sigla": "RA-A",
+                "designacao": "Região Autónoma dos Açores"
+            },
+            {
+                "_key": "ent_RA-M",
+                "tipo": "Entidade",
+                "sigla": "RA-M",
+                "designacao": "Região Autónoma da Madeira"
             }
-        ]
+        ],
+        "participantes": [
+            {
+                "_key": "ent_MJ",
+                "participLabel": "Comunicador",
+                "sigla": "MJ",
+                "designacao": "Ministro da Justiça",
+                "idTipo": "Entidade"
+            },
+            {
+                "_key": "ent_IRN",
+                "participLabel": "Assessor",
+                "sigla": "IRN",
+                "designacao": "Instituto dos Registos e do Notariado, IP",
+                "idTipo": "Entidade"
+            },
+            {
+                "_key": "tip_Cns",
+                "participLabel": "Iniciador",
+                "sigla": "Cns",
+                "designacao": "Consulados",
+                "idTipo": "Tipologia"
+            }
+        ],
+        "filhos": [],
+        "notasAp": [
+            {
+                "_key": "na_c100.10.069_83d-V3p_AGpDSzlxf8pxU",
+                "nota": "Emissão de documentos de viagem de cidadãos nacionais"
+            }
+        ],
+        "exemplosNotasAp": [],
+        "notasEx": [
+            {
+                "_key": "ne_c100.10.069_qEKL5IcHnK-xGFC8jXDQj",
+                "nota": "A emissão de documentos de viagem emitidos em favor de cidadãos estrangeiros, nomeadamente o passaporte para estrangeiros, o título de viagem para refugiados, o salvo-conduto, o documento de viagem para afastamento coercivo ou expulsão judicial de cidadãos nacionais de Estados terceiros, a lista de viagem para estudantes, deve ser considerada em 400.10.028 – Emissão de documentos de viagem a estrangeiros"
+            }
+        ],
+        "temSubclasses4Nivel": false,
+        "temSubclasses4NivelDF": false,
+        "temSubclasses4NivelPCA": false,
+        "processosRelacionados": [
+            {
+                "codigo": "400.10.001",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "400.10.025",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "400.10.041",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "500.40.500",
+                "tipoRel": "eAntecessorDe"
+            },
+            {
+                "codigo": "350.10.001",
+                "tipoRel": "eCruzadoCom"
+            }
+        ],
+        "legislacao": [
+            {
+                "_key": "leg_73N0CA3oxjOA0uxA2Ro-h",
+                "tipo": "DL",
+                "sumario": "Procede à sexta alteração ao Decreto-Lei n.º 83/2000, de 11 de maio, que aprovou o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "54/2015"
+            },
+            {
+                "_key": "leg_T4UqXGG4DukBBjpexZOk5",
+                "tipo": "DL",
+                "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "83/2000"
+            },
+            {
+                "_key": "leg_UsLh9P7LCiq1kXh1TeW3S",
+                "tipo": "DL",
+                "sumario": "Altera para 1 de Janeiro de 2001 a entrada em vigor do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o novo regime legal da concessão e emissão de passaportes",
+                "numero": "278/2000"
+            },
+            {
+                "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
+                "tipo": "DL",
+                "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
+                "numero": "108/2004"
+            },
+            {
+                "_key": "leg_UqtdvnrVaF0DK7tBakWm6",
+                "tipo": "Lei",
+                "sumario": "Primeira alteração ao Decreto-Lei n.º 108/2004, de 11 de Maio (altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes)",
+                "numero": "13/2005"
+            },
+            {
+                "_key": "leg_CEjw0JdvmwFLBZLyCDUDQ",
+                "tipo": "DL",
+                "sumario": "Quarta alteração ao Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "138/2006"
+            },
+            {
+                "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
+                "tipo": "DL",
+                "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "97/2011"
+            },
+            {
+                "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
+                "tipo": "DL",
+                "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "97/2011"
+            },
+            {
+                "_key": "leg_Bx4uC07tQS3fZXd1bcRPd",
+                "tipo": "DL",
+                "sumario": "Aprova a estrutura orgânica e define as atribuições do Serviço de Estrangeiros e Fronteiras",
+                "numero": "252/2000"
+            },
+            {
+                "_key": "leg_BZWJ0p0-00AmfHgIJ1PgG",
+                "tipo": "DL",
+                "sumario": "Aprova o regime legal que regulamenta a base de dados de emissão dos passaportes",
+                "numero": "86/2000"
+            },
+            {
+                "_key": "leg_gXkBG0W41KF98NILnBHqV",
+                "tipo": "DL",
+                "sumario": "Primeira alteração ao Decreto-Lei n.º 86/2000, de 12 de Maio, que regula a organização e o funcionamento do sistema de informação do passaporte electrónico português",
+                "numero": "139/2006"
+            },
+            {
+                "_key": "leg_T4UqXGG4DukBBjpexZOk5",
+                "tipo": "DL",
+                "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "83/2000"
+            },
+            {
+                "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
+                "tipo": "DL",
+                "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
+                "numero": "108/2004"
+            }
+        ],
+        "df": {
+            "idJust": "just_df_c400.10.027",
+            "valor": "E",
+            "_key": "df_c400.10.027",
+            "justificacao": [
+                {
+                    "criterio": "crit_just_df_c400.10.027_1",
+                    "tipoId": "CriterioJustificacaoDensidadeInfo",
+                    "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
+                    "processos": [
+                        {
+                            "procId": "c400.10.001"
+                        },
+                        {
+                            "procId": "c300.30.008"
+                        }
+                    ],
+                    "legislacao": []
+                },
+                {
+                    "criterio": "crit_just_df_c400.10.027_2",
+                    "tipoId": "CriterioJustificacaoLegal",
+                    "conteudo": " [DL 86/2000], artº 12.",
+                    "processos": [],
+                    "legislacao": [
+                        {
+                            "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
+                        }
+                    ]
+                }
+            ]
+        },
+        "pca": {
+            "idJust": "just_pca_c400.10.027",
+            "valores": [
+                "20"
+            ],
+            "_key": "pca_c400.10.027",
+            "notas": null,
+            "justificacao": [
+                {
+                    "criterio": "crit_just_pca_c400.10.027_1",
+                    "tipoId": "CriterioJustificacaoLegal",
+                    "conteudo": "[DL 86/2000], art.º 12º \"Os dados pessoais são conservados até 10 anos após a última emissão do passaporte do seu titular e durante 20 anos em ficheiro histórico após a data da última emissão de passaportes.\"",
+                    "processos": [],
+                    "legislacao": [
+                        {
+                            "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "_key": "c200.10.069",
+        "codigo": "200.10.069",
+        "titulo": "Emissão de passaportes",
+        "classeStatus": "A",
+        "nivel": 3,
+        "pai": {
+            "codigo": "200.10",
+            "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
+        },
+        "termosInd": [
+            {
+                "_key": "ti_tS1SRbsdffyysd4qT45",
+                "termo": "Documentação de segurança no âmbito da emissão de passaporte"
+            },
+            {
+                "_key": "ti_SaU5GLum9sdfsdfiLVp-Tl",
+                "termo": "Documento de viagem no âmbito da emissão de passaporte"
+            }
+        ],
+        "tipoProc": "Processo Específico",
+        "processoTransversal": "S",
+        "donos": [
+            {
+                "_key": "ent_SEF",
+                "tipo": "Entidade",
+                "sigla": "SEF",
+                "designacao": "Serviço de Estrangeiros e Fronteiras"
+            },
+            {
+                "_key": "ent_RA-A",
+                "tipo": "Entidade",
+                "sigla": "RA-A",
+                "designacao": "Região Autónoma dos Açores"
+            },
+            {
+                "_key": "ent_RA-M",
+                "tipo": "Entidade",
+                "sigla": "RA-M",
+                "designacao": "Região Autónoma da Madeira"
+            }
+        ],
+        "participantes": [
+            {
+                "_key": "ent_MJ",
+                "participLabel": "Comunicador",
+                "sigla": "MJ",
+                "designacao": "Ministro da Justiça",
+                "idTipo": "Entidade"
+            },
+            {
+                "_key": "ent_IRN",
+                "participLabel": "Assessor",
+                "sigla": "IRN",
+                "designacao": "Instituto dos Registos e do Notariado, IP",
+                "idTipo": "Entidade"
+            },
+            {
+                "_key": "tip_Cns",
+                "participLabel": "Iniciador",
+                "sigla": "Cns",
+                "designacao": "Consulados",
+                "idTipo": "Tipologia"
+            }
+        ],
+        "filhos": [],
+        "notasAp": [
+            {
+                "_key": "na_c200.10.069_83d-V3p_AGpDSzlxf8pxU",
+                "nota": "Emissão de documentos de viagem de cidadãos nacionais"
+            }
+        ],
+        "exemplosNotasAp": [],
+        "notasEx": [
+            {
+                "_key": "ne_c200.10.069_qEKL5IcHnK-xGFC8jXDQj",
+                "nota": "A emissão de documentos de viagem emitidos em favor de cidadãos estrangeiros, nomeadamente o passaporte para estrangeiros, o título de viagem para refugiados, o salvo-conduto, o documento de viagem para afastamento coercivo ou expulsão judicial de cidadãos nacionais de Estados terceiros, a lista de viagem para estudantes, deve ser considerada em 400.10.028 – Emissão de documentos de viagem a estrangeiros"
+            }
+        ],
+        "temSubclasses4Nivel": false,
+        "temSubclasses4NivelDF": false,
+        "temSubclasses4NivelPCA": false,
+        "processosRelacionados": [
+            {
+                "codigo": "400.10.001",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "400.10.025",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "400.10.041",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "500.40.500",
+                "tipoRel": "eAntecessorDe"
+            },
+            {
+                "codigo": "350.10.001",
+                "tipoRel": "eCruzadoCom"
+            }
+        ],
+        "legislacao": [
+            {
+                "_key": "leg_73N0CA3oxjOA0uxA2Ro-h",
+                "tipo": "DL",
+                "sumario": "Procede à sexta alteração ao Decreto-Lei n.º 83/2000, de 11 de maio, que aprovou o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "54/2015"
+            },
+            {
+                "_key": "leg_T4UqXGG4DukBBjpexZOk5",
+                "tipo": "DL",
+                "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "83/2000"
+            },
+            {
+                "_key": "leg_UsLh9P7LCiq1kXh1TeW3S",
+                "tipo": "DL",
+                "sumario": "Altera para 1 de Janeiro de 2001 a entrada em vigor do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o novo regime legal da concessão e emissão de passaportes",
+                "numero": "278/2000"
+            },
+            {
+                "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
+                "tipo": "DL",
+                "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
+                "numero": "108/2004"
+            },
+            {
+                "_key": "leg_UqtdvnrVaF0DK7tBakWm6",
+                "tipo": "Lei",
+                "sumario": "Primeira alteração ao Decreto-Lei n.º 108/2004, de 11 de Maio (altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes)",
+                "numero": "13/2005"
+            },
+            {
+                "_key": "leg_CEjw0JdvmwFLBZLyCDUDQ",
+                "tipo": "DL",
+                "sumario": "Quarta alteração ao Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "138/2006"
+            },
+            {
+                "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
+                "tipo": "DL",
+                "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "97/2011"
+            },
+            {
+                "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
+                "tipo": "DL",
+                "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "97/2011"
+            },
+            {
+                "_key": "leg_Bx4uC07tQS3fZXd1bcRPd",
+                "tipo": "DL",
+                "sumario": "Aprova a estrutura orgânica e define as atribuições do Serviço de Estrangeiros e Fronteiras",
+                "numero": "252/2000"
+            },
+            {
+                "_key": "leg_BZWJ0p0-00AmfHgIJ1PgG",
+                "tipo": "DL",
+                "sumario": "Aprova o regime legal que regulamenta a base de dados de emissão dos passaportes",
+                "numero": "86/2000"
+            },
+            {
+                "_key": "leg_gXkBG0W41KF98NILnBHqV",
+                "tipo": "DL",
+                "sumario": "Primeira alteração ao Decreto-Lei n.º 86/2000, de 12 de Maio, que regula a organização e o funcionamento do sistema de informação do passaporte electrónico português",
+                "numero": "139/2006"
+            },
+            {
+                "_key": "leg_T4UqXGG4DukBBjpexZOk5",
+                "tipo": "DL",
+                "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "83/2000"
+            },
+            {
+                "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
+                "tipo": "DL",
+                "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
+                "numero": "108/2004"
+            }
+        ],
+        "df": {
+            "idJust": "just_df_c400.10.027",
+            "valor": "E",
+            "_key": "df_c400.10.027",
+            "justificacao": [
+                {
+                    "criterio": "crit_just_df_c400.10.027_1",
+                    "tipoId": "CriterioJustificacaoDensidadeInfo",
+                    "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
+                    "processos": [
+                        {
+                            "procId": "c400.10.001"
+                        },
+                        {
+                            "procId": "c300.30.008"
+                        }
+                    ],
+                    "legislacao": []
+                },
+                {
+                    "criterio": "crit_just_df_c400.10.027_2",
+                    "tipoId": "CriterioJustificacaoLegal",
+                    "conteudo": " [DL 86/2000], artº 12.",
+                    "processos": [],
+                    "legislacao": [
+                        {
+                            "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
+                        }
+                    ]
+                }
+            ]
+        },
+        "pca": {
+            "idJust": "just_pca_c400.10.027",
+            "valores": [
+                "20"
+            ],
+            "_key": "pca_c400.10.027",
+            "notas": null,
+            "justificacao": [
+                {
+                    "criterio": "crit_just_pca_c400.10.027_1",
+                    "tipoId": "CriterioJustificacaoLegal",
+                    "conteudo": "[DL 86/2000], art.º 12º \"Os dados pessoais são conservados até 10 anos após a última emissão do passaporte do seu titular e durante 20 anos em ficheiro histórico após a data da última emissão de passaportes.\"",
+                    "processos": [],
+                    "legislacao": [
+                        {
+                            "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "_key": "c300.10.069",
+        "codigo": "300.10.069",
+        "titulo": "Emissão de passaportes",
+        "classeStatus": "A",
+        "nivel": 3,
+        "pai": {
+            "codigo": "300.10",
+            "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
+        },
+        "termosInd": [
+            {
+                "_key": "ti_tS1SRbwef34fvf4ysd4qT45",
+                "termo": "Documentação de segurança no âmbito da emissão de passaporte"
+            },
+            {
+                "_key": "ti_SaUf43df4f3gc7iLVp-Tl",
+                "termo": "Documento de viagem no âmbito da emissão de passaporte"
+            }
+        ],
+        "tipoProc": "Processo Específico",
+        "processoTransversal": "S",
+        "donos": [
+            {
+                "_key": "ent_SEF",
+                "tipo": "Entidade",
+                "sigla": "SEF",
+                "designacao": "Serviço de Estrangeiros e Fronteiras"
+            },
+            {
+                "_key": "ent_RA-A",
+                "tipo": "Entidade",
+                "sigla": "RA-A",
+                "designacao": "Região Autónoma dos Açores"
+            },
+            {
+                "_key": "ent_RA-M",
+                "tipo": "Entidade",
+                "sigla": "RA-M",
+                "designacao": "Região Autónoma da Madeira"
+            }
+        ],
+        "participantes": [
+            {
+                "_key": "ent_MJ",
+                "participLabel": "Comunicador",
+                "sigla": "MJ",
+                "designacao": "Ministro da Justiça",
+                "idTipo": "Entidade"
+            },
+            {
+                "_key": "ent_IRN",
+                "participLabel": "Assessor",
+                "sigla": "IRN",
+                "designacao": "Instituto dos Registos e do Notariado, IP",
+                "idTipo": "Entidade"
+            },
+            {
+                "_key": "tip_Cns",
+                "participLabel": "Iniciador",
+                "sigla": "Cns",
+                "designacao": "Consulados",
+                "idTipo": "Tipologia"
+            }
+        ],
+        "filhos": [],
+        "notasAp": [
+            {
+                "_key": "na_c300.10.069_83d-V3p_AGpDSzlxf8pxU",
+                "nota": "Emissão de documentos de viagem de cidadãos nacionais"
+            }
+        ],
+        "exemplosNotasAp": [],
+        "notasEx": [
+            {
+                "_key": "ne_c300.10.069_qEKL5IcHnK-xGFC8jXDQj",
+                "nota": "A emissão de documentos de viagem emitidos em favor de cidadãos estrangeiros, nomeadamente o passaporte para estrangeiros, o título de viagem para refugiados, o salvo-conduto, o documento de viagem para afastamento coercivo ou expulsão judicial de cidadãos nacionais de Estados terceiros, a lista de viagem para estudantes, deve ser considerada em 400.10.028 – Emissão de documentos de viagem a estrangeiros"
+            }
+        ],
+        "temSubclasses4Nivel": false,
+        "temSubclasses4NivelDF": false,
+        "temSubclasses4NivelPCA": false,
+        "processosRelacionados": [
+            {
+                "codigo": "400.10.001",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "400.10.025",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "400.10.041",
+                "tipoRel": "eSucessorDe"
+            },
+            {
+                "codigo": "500.40.500",
+                "tipoRel": "eAntecessorDe"
+            },
+            {
+                "codigo": "350.10.001",
+                "tipoRel": "eCruzadoCom"
+            }
+        ],
+        "legislacao": [
+            {
+                "_key": "leg_73N0CA3oxjOA0uxA2Ro-h",
+                "tipo": "DL",
+                "sumario": "Procede à sexta alteração ao Decreto-Lei n.º 83/2000, de 11 de maio, que aprovou o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "54/2015"
+            },
+            {
+                "_key": "leg_T4UqXGG4DukBBjpexZOk5",
+                "tipo": "DL",
+                "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "83/2000"
+            },
+            {
+                "_key": "leg_UsLh9P7LCiq1kXh1TeW3S",
+                "tipo": "DL",
+                "sumario": "Altera para 1 de Janeiro de 2001 a entrada em vigor do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o novo regime legal da concessão e emissão de passaportes",
+                "numero": "278/2000"
+            },
+            {
+                "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
+                "tipo": "DL",
+                "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
+                "numero": "108/2004"
+            },
+            {
+                "_key": "leg_UqtdvnrVaF0DK7tBakWm6",
+                "tipo": "Lei",
+                "sumario": "Primeira alteração ao Decreto-Lei n.º 108/2004, de 11 de Maio (altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes)",
+                "numero": "13/2005"
+            },
+            {
+                "_key": "leg_CEjw0JdvmwFLBZLyCDUDQ",
+                "tipo": "DL",
+                "sumario": "Quarta alteração ao Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "138/2006"
+            },
+            {
+                "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
+                "tipo": "DL",
+                "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "97/2011"
+            },
+            {
+                "_key": "leg_M_F3jGojbxFu3lfEQO8Vf",
+                "tipo": "DL",
+                "sumario": "Transfere a competência da concessão do passaporte comum dos governos civis para o director nacional do Serviço de Estrangeiros e Fronteiras, procedendo à quarta alteração do Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão do passaporte electrónico português",
+                "numero": "97/2011"
+            },
+            {
+                "_key": "leg_Bx4uC07tQS3fZXd1bcRPd",
+                "tipo": "DL",
+                "sumario": "Aprova a estrutura orgânica e define as atribuições do Serviço de Estrangeiros e Fronteiras",
+                "numero": "252/2000"
+            },
+            {
+                "_key": "leg_BZWJ0p0-00AmfHgIJ1PgG",
+                "tipo": "DL",
+                "sumario": "Aprova o regime legal que regulamenta a base de dados de emissão dos passaportes",
+                "numero": "86/2000"
+            },
+            {
+                "_key": "leg_gXkBG0W41KF98NILnBHqV",
+                "tipo": "DL",
+                "sumario": "Primeira alteração ao Decreto-Lei n.º 86/2000, de 12 de Maio, que regula a organização e o funcionamento do sistema de informação do passaporte electrónico português",
+                "numero": "139/2006"
+            },
+            {
+                "_key": "leg_T4UqXGG4DukBBjpexZOk5",
+                "tipo": "DL",
+                "sumario": "Aprova o novo regime legal da concessão e emissão dos passaportes",
+                "numero": "83/2000"
+            },
+            {
+                "_key": "leg_P4JJZnEwfROgoNnkhAIVi",
+                "tipo": "DL",
+                "sumario": "Altera o Decreto-Lei n.º 83/2000, de 11 de Maio, que aprova o regime legal da concessão e emissão de passaportes",
+                "numero": "108/2004"
+            }
+        ],
+        "df": {
+            "idJust": "just_df_c400.10.027",
+            "valor": "E",
+            "_key": "df_c400.10.027",
+            "justificacao": [
+                {
+                    "criterio": "crit_just_df_c400.10.027_1",
+                    "tipoId": "CriterioJustificacaoDensidadeInfo",
+                    "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
+                    "processos": [
+                        {
+                            "procId": "c400.10.001"
+                        },
+                        {
+                            "procId": "c300.30.008"
+                        }
+                    ],
+                    "legislacao": []
+                },
+                {
+                    "criterio": "crit_just_df_c400.10.027_2",
+                    "tipoId": "CriterioJustificacaoLegal",
+                    "conteudo": " [DL 86/2000], artº 12.",
+                    "processos": [],
+                    "legislacao": [
+                        {
+                            "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
+                        }
+                    ]
+                }
+            ]
+        },
+        "pca": {
+            "idJust": "just_pca_c400.10.027",
+            "valores": [
+                "20"
+            ],
+            "_key": "pca_c400.10.027",
+            "notas": null,
+            "justificacao": [
+                {
+                    "criterio": "crit_just_pca_c400.10.027_1",
+                    "tipoId": "CriterioJustificacaoLegal",
+                    "conteudo": "[DL 86/2000], art.º 12º \"Os dados pessoais são conservados até 10 anos após a última emissão do passaporte do seu titular e durante 20 anos em ficheiro histórico após a data da última emissão de passaportes.\"",
+                    "processos": [],
+                    "legislacao": [
+                        {
+                            "legId": "leg_BZWJ0p0-00AmfHgIJ1PgG"
+                        }
+                    ]
+                }
+            ]
+        }
     }
-}
+]

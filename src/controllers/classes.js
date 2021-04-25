@@ -501,18 +501,23 @@ return (pca!=null ? {idJust: just._key, formaContagem: formaContagem, valores: p
 // INSERT DE INFO
 
 let addTermosIndice = (context, classe) => {
+    let edges = []
+    let termos = []
     classe.termosInd.forEach(elem => {
         let ti = { _key: elem._key, termo: elem.termo, label: 'TI: ' + elem.termo, estado: 'Ativo' }
         let tiTypeEdge = { _from: "Nodes/" + elem._key, _to: "Nodes/TermoIndice", rel: 'type' }
         let assocClasse = { _from: "Nodes/" + elem._key, _to: "Nodes/" + classe._key, rel: 'estaAssocClasse' }
-        try {
-            context.db.query(aql`INSERT ${ti} INTO Nodes`)
-            context.db.query(aql`INSERT ${tiTypeEdge} INTO edges`)
-            context.db.query(aql`INSERT ${assocClasse} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir Termos Indice da Classe ' + classe._key)
-        }
+        termos.push(ti)
+        edges.push(tiTypeEdge)
+        edges.push(assocClasse)
     })
+    return context.db.query(aql`let te = ${termos}
+                                FOR t IN te INSERT t INTO Nodes
+                                let ed = ${edges}
+                                FOR e IN ed INSERT e INTO edges
+                                LET inserted = NEW RETURN inserted`)
+                                .then(d => d.all()).then(list => {console.log(list)})
+        .catch(e => { throw new ApolloError('Erro ao inserir termos indice da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
 }
 
 module.exports.addTermosIndice = addTermosIndice
@@ -562,79 +567,81 @@ let addParticipantes = (context, classe) => {
 module.exports.addParticipantes = addParticipantes
 
 let addNotas = (context, classe) => {
+    let edges = []
+    let notas = []
     classe.notasAp.forEach(elem => {
         let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temNotaAplicacao'}
         let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/NotaAplicacao" + elem._key, rel: 'type'}
-        try {
-            context.db.query(aql`INSERT ${notaEdge} INTO edges`)
-            context.db.query(aql`INSERT ${notaTypeEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir NotasAp da Classe ' + classe._key)
-        }
-
         let notaAp = {
             _key: elem._key,
             conteudo: elem.nota,
             'rdfs:label': 'Nota de Aplicação'
         }
-
-        context.db.query(aql`INSERT ${notaAp} INTO Nodes
-                        LET inserted = NEW RETURN inserted`)
-        .then(resp => resp.all()).then((list) => list[0])
-        .catch(err => console.log(err))
+        edges.push(notaEdge)
+        edges.push(notaTypeEdge)
+        notas.push(notaAp)
     })
+    return context.db.query(aql`let te = ${notas}
+                                FOR t IN te INSERT t INTO Nodes
+                                let ed = ${edges}
+                                FOR e IN ed INSERT e INTO edges
+                                LET inserted = NEW RETURN inserted`)
+        .then(d => d.all()).then(list => { console.log(list) })
+        .catch(e => { throw new ApolloError('Erro ao inserir notas de aplicação da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
 }
 
 module.exports.addNotas = addNotas
 
 let addExemplosNotas = (context, classe) => {
+    let edges = []
+    let notas = []
     classe.exemplosNotasAp.forEach(elem => {
         let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temExemploNA'}
         let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/ExemploNotaAplicacao" + elem._key, rel: 'type'}
-        try {
-            context.db.query(aql`INSERT ${notaEdge} INTO edges`)
-            context.db.query(aql`INSERT ${notaTypeEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir ExemplosNotasAp da Classe ' + classe._key)
-        }
-
         let exNotaAp = {
             _key: elem._key,
             conteudo: elem.nota,
             'rdfs:label': 'Exemplo de nota de Aplicação'
         }
-
-        context.db.query(aql`INSERT ${exNotaAp} INTO Nodes
-                        LET inserted = NEW RETURN inserted`)
-        .then(resp => resp.all()).then((list) => list[0])
-        .catch(err => console.log(err))
+        edges.push(notaEdge)
+        edges.push(notaTypeEdge)
+        notas.push(exNotaAp)
     })
+    return context.db.query(aql`let te = ${notas}
+                                FOR t IN te INSERT t INTO Nodes
+                                let ed = ${edges}
+                                FOR e IN ed INSERT e INTO edges
+                                LET inserted = NEW RETURN inserted`)
+        .then(d => d.all()).then(list => { console.log(list) })
+        .catch(e => { throw new ApolloError('Erro ao inserir exemplos de notas de aplicação da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
+
 }
 
 module.exports.addExemplosNotas = addExemplosNotas
 
 let addNotasExclusao = (context, classe) => {
+    let edges = []
+    let notas = []
     classe.notasEx.forEach(elem => {
         let notaEdge= { _from: "Nodes/" + classe._key , _to: "Nodes/" + elem._key, rel: 'temNotaExclusao'}
         let notaTypeEdge = { _from: "Nodes/" + elem._key , _to: "Nodes/NotaExclusao" + elem._key, rel: 'type'}
-        try {
-            context.db.query(aql`INSERT ${notaEdge} INTO edges`)
-            context.db.query(aql`INSERT ${notaTypeEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir NotasEx da Classe ' + classe._key)
-        }
-
         let notaEx = {
             _key: elem._key,
             conteudo: elem.nota,
             'rdfs:label': 'Nota de Exclusao'
         }
-
-        context.db.query(aql`INSERT ${notaEx} INTO Nodes
-                        LET inserted = NEW RETURN inserted`)
-        .then(resp => resp.all()).then((list) => list[0])
-        .catch(err => console.log(err))
+        edges.push(notaEdge)
+        edges.push(notaTypeEdge)
+        notas.push(notaEx)
     })
+    return context.db.query(aql`let te = ${notas}
+                                FOR t IN te INSERT t INTO Nodes
+                                let ed = ${edges}
+                                FOR e IN ed INSERT e INTO edges
+                                LET inserted = NEW RETURN inserted`)
+        .then(d => d.all()).then(list => { console.log(list) })
+        .catch(e => { throw new ApolloError('Erro ao inserir notas de exclusão da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
+
 }
 
 module.exports.addNotasExclusao = addNotasExclusao
@@ -720,11 +727,11 @@ module.exports.add = async (context, classe) => {
         descricao: DONE
         classeStatus: DONE
         termosInd: DONE
-        tipoProc:
+        tipoProc: DONE
         processoTransversal: DONE
         donos: DONE
         participantes: DONE
-        filhos:
+        filhos: DONE
         notasAp: DONE
         exemplosNotasAp: DONE
         notasEx: DONE
@@ -732,20 +739,21 @@ module.exports.add = async (context, classe) => {
         temSubclasses4NivelDF: IGNORAR
         temSubclasses4NivelPCA: IGNORAR
         processosRelacionados: DONE
-        legislacao:
+        legislacao: DONE
         df: ?Duvidas
         pca: ?Duvidas
 
         TO DO:
-        - (Check comment in function addParticipantes call for "to do")
         - Check campo procDimQual e processoUniform (Não estão na lista mas deviam estar??)
+        - Alterar objeto classe (criar novo em vez de remover campos)
     */
 
     //ADDING PARENT EDGE
     addPai(context,classe)
 
     //ADDING TERMOS INDICE
-    addTermosIndice(context,classe)
+    await addTermosIndice(context,classe)
+
 
     //ADDING DONOS
     addDonos(context,classe)
@@ -754,9 +762,9 @@ module.exports.add = async (context, classe) => {
     addParticipantes(context, classe)
 
     //ADDING NOTAS
-    addNotas(context,classe)
-    addExemplosNotas(context,classe)
-    addNotasExclusao(context, classe)
+    await addNotas(context,classe)
+    await addExemplosNotas(context,classe)
+    await addNotasExclusao(context, classe)
 
     //ADDING PROCESSOS RELACIONADOS
     addProcRels(context,classe)
@@ -780,17 +788,19 @@ module.exports.add = async (context, classe) => {
     delete classe.exemplosNotasAp
     delete classe.notasEx
     delete classe.temSubclasses4Nivel
-    delete classe.temSubclassesPCA
-    delete classe.temSubclassesDF
+    delete classe.temSubclasses4NivelPCA
+    delete classe.temSubclasses4NivelDF
     delete classe.processosRelacionados
     delete classe.legislacao
     delete classe.df
     delete classe.pca
     delete classe.tipoProc
 
-    //ADDING ENTIDADE
-    return context.db.query(aql`INSERT ${classe} INTO Nodes
+    let cls = await context.db.query(aql`INSERT ${classe} INTO Nodes
                         LET inserted = NEW RETURN inserted`)
         .then(resp => resp.all()).then((list) => list[0])
-        .catch(err => console.log(err))
+        .catch(e => { throw new ApolloError('Erro ao inserir Classe ' + classe._key) })
+
+    //ADDING ENTIDADE
+    return cls 
 }

@@ -8,6 +8,7 @@ const tipologiasResolvers = require('./tipologiasResolvers')
 const classesResolvers = require('./classesResolvers')
 const { GraphQLUpload } = require('graphql-upload')
 const streamToPromise = require('stream-to-promise')
+const { ApolloError } = require('apollo-server-errors')
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -73,24 +74,21 @@ const resolvers = {
         },
         importClasses: (obj, args, context) => {
             return args.file.then(async file => {
-                console.log(file)
-                //Contents of Upload scalar: https://github.com/jaydenseric/graphql-upload#class-graphqlupload
+                let loaded = false;
                 let readable = file.createReadStream()
-                //node stream api: https://nodejs.org/api/stream.html
-                readable.on('data', (chunk) => {
-                    console.log(`Received ${chunk.length} bytes of data.`);
-                });
                 readable.on('end', function () {
-                    console.log('end')
-                    return true
+                    loaded = true
                 });
                 readable.on('error', function () {
-                    console.log('error')
-                    return false
+                    loaded = false
                 });
                 let f = await streamToPromise(readable)
-                console.log(f.toString())
-                return true
+                let cls = JSON.parse(f)
+                for (const classe of cls){
+                    await classes.add(context,classe)
+                }
+                console.log(loaded)
+                return loaded
             });
         }
     },
