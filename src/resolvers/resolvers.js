@@ -41,6 +41,9 @@ const resolvers = {
         legislacao: (obj, args, context)  => {
             return legislacoes.find(context, args._key)
         },
+        tipologias: (obj, args, context) => {
+            return tipologias.list(context)
+        },
         tipologia: (obj, args, context) => {
             return tipologias.find(context, args._key)
         },

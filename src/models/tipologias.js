@@ -6,6 +6,7 @@ const outputs = gql`
         tipEstado: String!
         tipDesignacao: String!
         participante: [ParticipanteTipologia!]!
+        tipSigla: String!
         dono: [DonoTipologia!]!
         entidade: [EntidadeTipologia!]!
     }

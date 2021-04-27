@@ -39,6 +39,7 @@ const typeDefs = gql`
         entidade(_key: String!): Entidade
         legislacoes: [Legislacao!]!
         legislacao(_key: String!): Legislacao
+        tipologias: [Tipologia!]!
         tipologia(_key: String!): Tipologia
         classes(tipo: String, nivel: Int, ents: [String!], tips: [String!]): [Classe!]!
         classesTree: [ClasseTree]

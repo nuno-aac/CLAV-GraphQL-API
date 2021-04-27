@@ -1,6 +1,14 @@
 const { aql } = require("arangojs");
 const { buildSemanticFilter } = require('../controllers/relacoes')
 
+module.exports.list = (context) => {
+        return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/TipologiaEntidade' GRAPH 'Graph'
+                                FILTER e.rel == 'type'
+                                RETURN v`)
+            .then(resp => resp.all()).then((list) => list)
+            .catch(err => console.log(err))
+}
+    
 module.exports.find = (context, id) => {
     return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/TipologiaEntidade' GRAPH 'Graph'
                             FILTER e.rel == 'type' && v._key == ${id}
