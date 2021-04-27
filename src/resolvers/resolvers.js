@@ -22,7 +22,6 @@ const resolvers = {
         entidades: (obj, args, context) => {
             let entsCache = context.cache.get( "cacheEnts" );
             if ( entsCache == undefined ){
-                console.log('undefined')
                 return entidades.list(context).then(list => {
                     context.cache.set('cacheEnts', list)
                     return list
