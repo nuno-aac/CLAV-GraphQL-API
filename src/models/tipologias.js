@@ -3,8 +3,8 @@ const { gql } = require('apollo-server-express');
 const outputs = gql`
     type Tipologia {
         _key: String!
-        estado: String!
-        designacao: String!
+        tipEstado: String!
+        tipDesignacao: String!
         participante: [ParticipanteTipologia!]!
         dono: [DonoTipologia!]!
         entidade: [EntidadeTipologia!]!
