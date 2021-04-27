@@ -5,6 +5,7 @@
         "titulo": "Emissão de passaportes",
         "classeStatus": "A",
         "nivel": 3,
+        "descricao": "exemplo",
         "pai": {
             "codigo": "100.10",
             "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
@@ -184,12 +185,12 @@
             }
         ],
         "df": {
-            "idJust": "just_df_c400.10.027",
+            "idJust": "just_df_c100.10.069",
             "valor": "E",
-            "_key": "df_c400.10.027",
+            "_key": "df_c100.10.069",
             "justificacao": [
                 {
-                    "criterio": "crit_just_df_c400.10.027_1",
+                    "criterio": "crit_just_df_c100.10.069_1",
                     "tipoId": "CriterioJustificacaoDensidadeInfo",
                     "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
                     "processos": [
@@ -203,7 +204,7 @@
                     "legislacao": []
                 },
                 {
-                    "criterio": "crit_just_df_c400.10.027_2",
+                    "criterio": "crit_just_df_c100.10.069_2",
                     "tipoId": "CriterioJustificacaoLegal",
                     "conteudo": " [DL 86/2000], artº 12.",
                     "processos": [],
@@ -243,6 +244,7 @@
         "titulo": "Emissão de passaportes",
         "classeStatus": "A",
         "nivel": 3,
+        "descricao": "exemplo",
         "pai": {
             "codigo": "200.10",
             "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
@@ -422,12 +424,12 @@
             }
         ],
         "df": {
-            "idJust": "just_df_c400.10.027",
+            "idJust": "just_df_c200.10.069",
             "valor": "E",
-            "_key": "df_c400.10.027",
+            "_key": "df_c200.10.069",
             "justificacao": [
                 {
-                    "criterio": "crit_just_df_c400.10.027_1",
+                    "criterio": "crit_just_df_c200.10.069_1",
                     "tipoId": "CriterioJustificacaoDensidadeInfo",
                     "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
                     "processos": [
@@ -441,7 +443,7 @@
                     "legislacao": []
                 },
                 {
-                    "criterio": "crit_just_df_c400.10.027_2",
+                    "criterio": "crit_just_df_c200.10.069_2",
                     "tipoId": "CriterioJustificacaoLegal",
                     "conteudo": " [DL 86/2000], artº 12.",
                     "processos": [],
@@ -481,6 +483,7 @@
         "titulo": "Emissão de passaportes",
         "classeStatus": "A",
         "nivel": 3,
+        "descricao": "exemplo",
         "pai": {
             "codigo": "300.10",
             "titulo": "Registo de dados de identificação e caracterização de entidades ou atos"
@@ -660,12 +663,12 @@
             }
         ],
         "df": {
-            "idJust": "just_df_c400.10.027",
+            "idJust": "just_df_c300.10.069",
             "valor": "E",
-            "_key": "df_c400.10.027",
+            "_key": "df_c300.10.069",
             "justificacao": [
                 {
-                    "criterio": "crit_just_df_c400.10.027_1",
+                    "criterio": "crit_just_df_c300.10.069_1",
                     "tipoId": "CriterioJustificacaoDensidadeInfo",
                     "conteudo": " A informação relativa à identidade da pessoa, garante de direitos, é recuperável no PN 400.10.001- Registo civil; A informação relativa ao passaportes emitidos é recuperável em PN 300.30.008 - Registo de documentos; ",
                     "processos": [
@@ -679,7 +682,7 @@
                     "legislacao": []
                 },
                 {
-                    "criterio": "crit_just_df_c400.10.027_2",
+                    "criterio": "crit_just_df_c300.10.069_2",
                     "tipoId": "CriterioJustificacaoLegal",
                     "conteudo": " [DL 86/2000], artº 12.",
                     "processos": [],
