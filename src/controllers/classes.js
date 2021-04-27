@@ -714,10 +714,10 @@ let addDF = (context, classe) => {
     let nodes = []
     let edges = []
     nodes.push({ _key: classe.df._key, dfValor: classe.df.valor}) // NODO DF
-    edges.push({ _from: "Nodes/" + classe._key, _to: "Nodes/" + classe.df._key, rel: 'temJustificacao' }) // EDGE Classe => DF
+    edges.push({ _from: "Nodes/" + classe._key, _to: "Nodes/" + classe.df._key, rel: 'temDF' }) // EDGE Classe => DF
     nodes.push({ _key: classe.df.idJust }) // NODO Justificaçao
     edges.push({ _from: "Nodes/" + classe.df._key, _to: "Nodes/" + classe.df.idJust, rel: 'temJustificacao' }) // EDGE DF => Justificação
-    edges.push({ _from: "Nodes/" + classe.df._key, _to: "Nodes/JustificacaoDF", rel: 'type' }) // EDGE tipo justificação
+    edges.push({ _from: "Nodes/" + classe.df.idJust, _to: "Nodes/JustificacaoDF", rel: 'type' }) // EDGE tipo justificação
     classe.df.justificacao.forEach(critJust => {
         nodes.push({ _key: critJust.criterio, conteudo: critJust.conteudo }) // NODO critJust
         edges.push({ _from: "Nodes/" + classe.df.idJust, _to: "Nodes/" + critJust.criterio, rel: 'temCriterio' }) // EDGE Justificação => critJust
@@ -742,6 +742,39 @@ let addDF = (context, classe) => {
 }
 
 module.exports.addDF = addDF
+
+let addPCA = (context, classe) => {
+    let nodes = []
+    let edges = []
+    nodes.push({ _key: classe.pca._key, pcaValor: classe.pca.valores[0]}) // NODO PCA VALORES???
+    edges.push({ _from: "Nodes/" + classe._key, _to: "Nodes/" + classe.pca._key, rel: 'temPCA' }) // EDGE Classe => PCA
+    nodes.push({ _key: classe.pca.idJust }) // NODO Justificaçao
+    edges.push({ _from: "Nodes/" + classe.pca._key, _to: "Nodes/" + classe.pca.idJust, rel: 'temJustificacao' }) // EDGE PCA => Justificação
+    edges.push({ _from: "Nodes/" + classe.pca._key, _to: "Nodes/JustificacaoPCA", rel: 'type' }) // EDGE tipo justificação
+    classe.pca.justificacao.forEach(critJust => {
+        nodes.push({ _key: critJust.criterio, conteudo: critJust.conteudo }) // NODO critJust
+        edges.push({ _from: "Nodes/" + classe.pca.idJust, _to: "Nodes/" + critJust.criterio, rel: 'temCriterio' }) // EDGE Justificação => critJust
+        edges.push({ _from: "Nodes/" + critJust.criterio, _to: "Nodes/" + critJust.tipoId, rel: 'type' }) // EDGE tipo critJust
+        critJust.processos.forEach(proc => {
+            edges.push({ _from: "Nodes/" + critJust.criterio, _to: "Nodes/" + proc.procId, rel: 'critTemProcRel' }) // EDGE critJust => processos relacionados
+        })
+        critJust.legislacao.forEach(leg => {
+            edges.push({ _from: "Nodes/" + critJust.criterio, _to: "Nodes/" + leg.legId, rel: 'critTemLegAssoc' }) // EDGE critJust => legislação
+        })
+    })
+
+    return context.db.query(aql`let no = ${nodes}
+                                FOR n IN no INSERT n INTO Nodes
+                                let ed = ${edges}
+                                FOR e IN ed INSERT e INTO edges
+                                LET inserted = NEW RETURN inserted`)
+        .then(d => d.all()).then(list => { console.log(list) })
+        .catch(e => { throw new ApolloError('Erro ao inserir pca da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
+
+
+}
+
+module.exports.addPCA = addPCA
 
 
 module.exports.add = async (context, classe) => {
