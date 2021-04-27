@@ -845,6 +845,7 @@ module.exports.add = async (context, classe) => {
     addLegislacao(context, classe)
 
     await addDF(context,classe)
+    await addPCA(context,classe)
 
     delete classe.nivel
     delete classe.pai
