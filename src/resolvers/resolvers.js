@@ -41,7 +41,18 @@ const resolvers = {
             return legislacoes.find(context, args._key)
         },
         tipologias: (obj, args, context) => {
-            return tipologias.list(context)
+            let tipsCache = context.cache.get( "cacheTips" );
+            if ( tipsCache == undefined ){
+                tipologias.listFull(context,args).then(list => {
+                    context.cache.set('cacheTips', list)
+                })
+                console.log("no cache")
+                return tipologias.list(context)
+            }
+            else {
+                console.log('cache')
+                return tipsCache
+            }         
         },
         tipologia: (obj, args, context) => {
             return tipologias.find(context, args._key)

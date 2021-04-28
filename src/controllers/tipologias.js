@@ -1,13 +1,25 @@
 const { aql } = require("arangojs");
 const { buildSemanticFilter } = require('../controllers/relacoes')
 
-module.exports.list = (context) => {
+let listAll = (context) => {
         return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/TipologiaEntidade' GRAPH 'Graph'
                                 FILTER e.rel == 'type'
                                 RETURN v`)
             .then(resp => resp.all()).then((list) => list)
             .catch(err => console.log(err))
 }
+
+module.exports.list = listAll
+
+module.exports.listFull = async (context, args) => {
+        var lista = await listAll(context,args)
+        return Promise.all(lista.map(async elem => {
+            elem.participante = await this.getParticipantes(context,elem._key)
+            elem.dono = await this.getDonos(context,elem._key)
+            elem.entidade = await this.getEntidades(context,elem._key)
+            return elem
+        }))
+    }
     
 module.exports.find = (context, id) => {
     return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/TipologiaEntidade' GRAPH 'Graph'
