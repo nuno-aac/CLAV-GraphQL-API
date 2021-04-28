@@ -12,7 +12,7 @@ let listAll = (context) => {
 module.exports.list = listAll
 
 module.exports.listFull = async (context, args) => {
-        var lista = await listAll(context,args)
+        var lista = await listAll(context)
         return Promise.all(lista.map(async elem => {
             elem.participante = await this.getParticipantes(context,elem._key)
             elem.dono = await this.getDonos(context,elem._key)
