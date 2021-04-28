@@ -46,11 +46,9 @@ const resolvers = {
                 tipologias.listFull(context,args).then(list => {
                     context.cache.set('cacheTips', list)
                 })
-                console.log("no cache")
                 return tipologias.list(context)
             }
             else {
-                console.log('cache')
                 return tipsCache
             }         
         },
