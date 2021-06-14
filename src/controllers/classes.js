@@ -511,6 +511,9 @@ let addTermosIndice = (context, classe) => {
         edges.push(tiTypeEdge)
         edges.push(assocClasse)
     })
+
+    return { edges: edges, nodes: termos }
+
     return context.db.query(aql`let te = ${termos}
                                 FOR t IN te INSERT t INTO Nodes
                                 let ed = ${edges}
@@ -526,7 +529,7 @@ let addPai = (context, classe) => {
     if (classe.pai) {
         let parentedge = { _from: "Nodes/" + classe._key, _to: "Nodes/c" + classe.pai.codigo, rel: 'temPai' }
         if (classe.codigo.startsWith(classe.pai.codigo))
-            context.db.query(aql`INSERT ${parentedge} INTO edges`)
+            return { edges: [parentedge], nodes: [] }
         else
             throw new UserInputError('Codigo de processo pai inváldio')
     }
@@ -537,31 +540,27 @@ let addPai = (context, classe) => {
 module.exports.addPai = addPai
 
 let addDonos = (context, classe) => {
+    let edges = []
     classe.donos.forEach(elem => {
         let donoEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/" + elem._key, rel: 'temDono' }
-        try {
-            context.db.query(aql`INSERT ${donoEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir donos da Classe ' + classe._key)
-        }
+        edges.push(donoEdge)
     })
+    return { edges: edges, nodes: [] }
 }
 
 module.exports.addDonos = addDonos
 
 let addParticipantes = (context, classe) => {
+    let edges = []
     classe.participantes.forEach(async elem => {
         let participanteEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/" + elem._key, rel: 'temParticipante' + elem.participLabel }
         let isSP = await isSubPropertyOfRel(context, 'temParticipante' + elem.participLabel, 'temParticipante')
         if (isSP)
-            try {
-                context.db.query(aql`INSERT ${participanteEdge} INTO edges`)
-            } catch {
-                throw new ApolloError('Erro ao inserir participantes da Classe ' + classe._key)
-            }
+            edges.push(participanteEdge)
         else
             throw new UserInputError('Tipo de participante inválido: ' + elem.participLabel)
     })
+    return { edges: edges, nodes: [] }
 }
 
 module.exports.addParticipantes = addParticipantes
@@ -581,6 +580,9 @@ let addNotas = (context, classe) => {
         edges.push(notaTypeEdge)
         notas.push(notaAp)
     })
+
+    return { edges: edges, nodes: notas }
+
     return context.db.query(aql`let te = ${notas}
                                 FOR t IN te INSERT t INTO Nodes
                                 let ed = ${edges}
@@ -607,6 +609,9 @@ let addExemplosNotas = (context, classe) => {
         edges.push(notaTypeEdge)
         notas.push(exNotaAp)
     })
+
+    return { edges: edges, nodes: notas }
+
     return context.db.query(aql`let te = ${notas}
                                 FOR t IN te INSERT t INTO Nodes
                                 let ed = ${edges}
@@ -634,6 +639,9 @@ let addNotasExclusao = (context, classe) => {
         edges.push(notaTypeEdge)
         notas.push(notaEx)
     })
+
+    return { edges: edges, nodes: notas }
+
     return context.db.query(aql`let te = ${notas}
                                 FOR t IN te INSERT t INTO Nodes
                                 let ed = ${edges}
@@ -647,65 +655,56 @@ let addNotasExclusao = (context, classe) => {
 module.exports.addNotasExclusao = addNotasExclusao
 
 let addProcRels = (context, classe) => {
+    let edges =  []
     classe.processosRelacionados.forEach(async elem => {
         let procRelEdge = { _from: "Nodes/" + classe._key, _to: "Nodes/c" + elem.codigo, rel: elem.tipoRel }
         let isSP = await isSubPropertyOfRel(context, elem.tipoRel, 'temRelProc')
         if (isSP)
-            try {
-                context.db.query(aql`INSERT ${procRelEdge} INTO edges`)
-            } catch {
-                throw new ApolloError('Erro ao inserir processos relacionados da Classe ' + classe._key)
-            }
+            edges.push(procRelEdge)
         else
             throw new UserInputError('Relação de processo inválida: ' + elem.tipoRel)
     })
+
+    return { edges: edges, nodes: [] }
 }
 
 module.exports.addProcRels = addProcRels
 
 let addTipoProc = (context, classe) => {
+    let edge
     if(classe.tipoProc == "Processo Específico"){
-        let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/vc_processoTipo_pe", rel: 'processoTipoVC' }
-        try {
-            context.db.query(aql`INSERT ${edge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir tipoProc da Classe ' + classe._key)
-        }
+        edge = { _from: "Nodes/" + classe._key, _to: "Nodes/vc_processoTipo_pe", rel: 'processoTipoVC' }
     }
     else if(classe.tipoProc == "Processo Comum"){
-        let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/vc_processoTipo_pc", rel: 'processoTipoVC' }
-        try {
-            context.db.query(aql`INSERT ${edge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir tipoProc da Classe ' + classe._key)
-        }
+        edge = { _from: "Nodes/" + classe._key, _to: "Nodes/vc_processoTipo_pc", rel: 'processoTipoVC' }
     }
+    else {
+        throw new ApolloError('Erro ao inserir tipoProc inválido da Classe ' + classe._key)
+    }
+    return { edges: [edge], nodes: [] }
 }
 
 module.exports.addTipoProc = addTipoProc
 
 let addFilhos = (context, classe) => {
+    let edges = []
     classe.filhos.forEach(kid => {
         let filhoEdge = { _from: "Nodes/" + kid._key , _to: "Nodes/" + classe._key, rel: 'temPai' }
-        try {
-            context.db.query(aql`INSERT ${filhoEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir filhos da Classe ' + classe._key)
-        }
+        edges.push(filhoEdge)
     })
+    return { edges: edges, nodes: [] }
 }
 
 module.exports.addFilhos = addFilhos
 
 let addLegislacao = (context, classe) => {
+    let edges = []
     classe.legislacao.forEach(leg => {
         let legEdge = { _from: "Nodes/" + classe._key , _to: "Nodes/" + leg._key, rel: 'temLegislacao' }
-        try {
-            context.db.query(aql`INSERT ${legEdge} INTO edges`)
-        } catch {
-            throw new ApolloError('Erro ao inserir Legislacao da Classe ' + classe._key)
-        }
+        edges.push(legEdge)
     })
+
+    return { edges: edges, nodes: [] }
 }
 
 module.exports.addLegislacao = addLegislacao
@@ -729,6 +728,8 @@ let addDF = (context, classe) => {
             edges.push({ _from: "Nodes/" + critJust.criterio, _to: "Nodes/" + leg.legId, rel: 'critTemLegAssoc' }) // EDGE critJust => legislação
         })
     })
+
+    return { edges: edges, nodes: nodes }
 
     return context.db.query(aql`let no = ${nodes}
                                 FOR n IN no INSERT n INTO Nodes
@@ -763,6 +764,8 @@ let addPCA = (context, classe) => {
         })
     })
 
+    return { edges: edges, nodes: nodes }
+
     return context.db.query(aql`let no = ${nodes}
                                 FOR n IN no INSERT n INTO Nodes
                                 let ed = ${edges}
@@ -776,76 +779,51 @@ let addPCA = (context, classe) => {
 
 module.exports.addPCA = addPCA
 
+let addToGraph = (old, add) => {
+    return { edges: old.edges.concat(add.edges), nodes: old.nodes.concat(add.nodes) }
+}
 
 module.exports.add = async (context, classe) => {
+    let graph = { nodes: [], edges: [] }
+
     //ADDING TYPE EDGE
     if(!(classe.nivel >= 1 && classe.nivel <= 4))
         throw new UserInputError('Nivel de processo invalido')
-    let edge = { _from: "Nodes/" + classe._key, _to: "Nodes/ClasseN"+classe.nivel, rel: 'type' }
-    await context.db.query(aql`INSERT ${edge} INTO edges`)
-
-    /*
-        _key: DONE
-        nivel: DONE
-        pai: DONE
-        codigo: DONE
-        titulo: DONE
-        descricao: DONE
-        classeStatus: DONE
-        termosInd: DONE
-        tipoProc: DONE
-        processoTransversal: DONE
-        donos: DONE
-        participantes: DONE
-        filhos: DONE
-        notasAp: DONE
-        exemplosNotasAp: DONE
-        notasEx: DONE
-        temSubclasses4Nivel: IGNORAR
-        temSubclasses4NivelDF: IGNORAR
-        temSubclasses4NivelPCA: IGNORAR
-        processosRelacionados: DONE
-        legislacao: DONE
-        df: ?Duvidas
-        pca: ?Duvidas
-
-        TO DO:
-        - Check campo procDimQual e processoUniform (Não estão na lista mas deviam estar??)
-        - Alterar objeto classe (criar novo em vez de remover campos)
-    */
+    let niveledge = { _from: "Nodes/" + classe._key, _to: "Nodes/ClasseN"+classe.nivel, rel: 'type' }
+    graph.edges.push(niveledge)
 
     //ADDING PARENT EDGE
-    addPai(context,classe)
+    graph = addToGraph(graph, addPai(context,classe))
 
     //ADDING TERMOS INDICE
-    await addTermosIndice(context,classe)
+    graph = addToGraph(graph, addTermosIndice(context,classe))
 
 
     //ADDING DONOS
-    addDonos(context,classe)
+    graph = addToGraph(graph, addDonos(context,classe))
 
     //ADDING PARTICIPANTES
-    addParticipantes(context, classe)
+    graph = addToGraph(graph, addParticipantes(context, classe))
 
     //ADDING NOTAS
-    await addNotas(context,classe)
-    await addExemplosNotas(context,classe)
-    await addNotasExclusao(context, classe)
+    graph = addToGraph(graph, addNotas(context,classe))
+    graph = addToGraph(graph, addExemplosNotas(context,classe))
+    graph = addToGraph(graph, addNotasExclusao(context, classe))
 
     //ADDING PROCESSOS RELACIONADOS
-    addProcRels(context,classe)
+    graph = addToGraph(graph, addProcRels(context,classe))
 
     //ADDING TIPOPROC
-    addTipoProc(context, classe)
+    graph = addToGraph(graph, addTipoProc(context, classe))
 
     //ADDING FILHOS
-    addFilhos(context, classe)
+    graph = addToGraph(graph, addFilhos(context, classe))
 
     //AADING LEGISLACAO
-    addLegislacao(context, classe)
+    graph = addToGraph(graph, addLegislacao(context, classe))
 
-    await addDF(context,classe)
-    await addPCA(context,classe)
+    graph = addToGraph(graph, addDF(context,classe))
+    graph = addToGraph(graph, addPCA(context,classe))
 
     delete classe.nivel
     delete classe.pai
@@ -865,11 +843,15 @@ module.exports.add = async (context, classe) => {
     delete classe.pca
     delete classe.tipoProc
 
-    let cls = await context.db.query(aql`INSERT ${classe} INTO Nodes
-                        LET inserted = NEW RETURN inserted`)
-        .then(resp => resp.all()).then((list) => list[0])
-        .catch(e => { throw new ApolloError('Erro ao inserir Classe ' + classe._key) })
+    graph.nodes.push(classe)
+    console.log(graph.nodes.length)
 
     //ADDING ENTIDADE
-    return cls 
+    return context.db.query(aql`let no = ${graph.nodes}
+                                FOR n IN no INSERT n INTO Nodes
+                                let ed = ${graph.edges}
+                                FOR e IN ed INSERT e INTO edges
+                                LET inserted = NEW RETURN inserted`)
+        .then(d => d.all()).then(list => { return list[0] })
+        .catch(e => { throw new ApolloError('Erro ao inserir Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
 }
