@@ -1,6 +1,8 @@
 const { aql } = require("arangojs");
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
 var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+const salt = 14
 
 module.exports.list = (context) => {
     return context.db.query(aql`for n in users return n`)
@@ -16,7 +18,8 @@ module.exports.find = (context,id) => {
         .catch(err => console.log(err))
 }
 
-module.exports.add = (context, user) => {
+module.exports.add = async (context, user) => {
+    user.local.password = await bcrypt.hash(user.local.password, salt) 
     return context.db.query(aql`INSERT ${user} INTO users LET inserted = NEW RETURN inserted`)
         .then(resp => resp.all()).then((list) => list[0]) // Parsing ArrayCursor from arango to single user
         .catch(err => console.log(err))
