@@ -51,7 +51,7 @@ const typeDefs = gql`
         login(email: String!, password: String!): Login
         addlegislacao(leg: LegislacaoInput!): Legislacao
         addEntidade(ent: EntidadeInput!): Entidade
-        addClasse(classe: ClasseInput!): Classe
+        addClasse(classe: ClasseInput!): Boolean!
         importClasses(file: Upload!): Boolean!
     }
     

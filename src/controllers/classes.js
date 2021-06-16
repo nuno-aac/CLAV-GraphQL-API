@@ -513,14 +513,6 @@ let addTermosIndice = (context, classe) => {
     })
 
     return { edges: edges, nodes: termos }
-
-    return context.db.query(aql`let te = ${termos}
-                                FOR t IN te INSERT t INTO Nodes
-                                let ed = ${edges}
-                                FOR e IN ed INSERT e INTO edges
-                                LET inserted = NEW RETURN inserted`)
-                                .then(d => d.all()).then(list => {console.log(list)})
-        .catch(e => { throw new ApolloError('Erro ao inserir termos indice da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
 }
 
 module.exports.addTermosIndice = addTermosIndice
@@ -582,14 +574,6 @@ let addNotas = (context, classe) => {
     })
 
     return { edges: edges, nodes: notas }
-
-    return context.db.query(aql`let te = ${notas}
-                                FOR t IN te INSERT t INTO Nodes
-                                let ed = ${edges}
-                                FOR e IN ed INSERT e INTO edges
-                                LET inserted = NEW RETURN inserted`)
-        .then(d => d.all()).then(list => { console.log(list) })
-        .catch(e => { throw new ApolloError('Erro ao inserir notas de aplicação da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
 }
 
 module.exports.addNotas = addNotas
@@ -611,15 +595,6 @@ let addExemplosNotas = (context, classe) => {
     })
 
     return { edges: edges, nodes: notas }
-
-    return context.db.query(aql`let te = ${notas}
-                                FOR t IN te INSERT t INTO Nodes
-                                let ed = ${edges}
-                                FOR e IN ed INSERT e INTO edges
-                                LET inserted = NEW RETURN inserted`)
-        .then(d => d.all()).then(list => { console.log(list) })
-        .catch(e => { throw new ApolloError('Erro ao inserir exemplos de notas de aplicação da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
-
 }
 
 module.exports.addExemplosNotas = addExemplosNotas
@@ -641,15 +616,6 @@ let addNotasExclusao = (context, classe) => {
     })
 
     return { edges: edges, nodes: notas }
-
-    return context.db.query(aql`let te = ${notas}
-                                FOR t IN te INSERT t INTO Nodes
-                                let ed = ${edges}
-                                FOR e IN ed INSERT e INTO edges
-                                LET inserted = NEW RETURN inserted`)
-        .then(d => d.all()).then(list => { console.log(list) })
-        .catch(e => { throw new ApolloError('Erro ao inserir notas de exclusão da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
-
 }
 
 module.exports.addNotasExclusao = addNotasExclusao
@@ -730,16 +696,6 @@ let addDF = (context, classe) => {
     })
 
     return { edges: edges, nodes: nodes }
-
-    return context.db.query(aql`let no = ${nodes}
-                                FOR n IN no INSERT n INTO Nodes
-                                let ed = ${edges}
-                                FOR e IN ed INSERT e INTO edges
-                                LET inserted = NEW RETURN inserted`)
-        .then(d => d.all()).then(list => { console.log(list) })
-        .catch(e => { throw new ApolloError('Erro ao inserir df da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
-
-
 }
 
 module.exports.addDF = addDF
@@ -765,16 +721,6 @@ let addPCA = (context, classe) => {
     })
 
     return { edges: edges, nodes: nodes }
-
-    return context.db.query(aql`let no = ${nodes}
-                                FOR n IN no INSERT n INTO Nodes
-                                let ed = ${edges}
-                                FOR e IN ed INSERT e INTO edges
-                                LET inserted = NEW RETURN inserted`)
-        .then(d => d.all()).then(list => { console.log(list) })
-        .catch(e => { throw new ApolloError('Erro ao inserir pca da Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
-
-
 }
 
 module.exports.addPCA = addPCA
@@ -852,6 +798,6 @@ module.exports.add = async (context, classe) => {
                                 let ed = ${graph.edges}
                                 FOR e IN ed INSERT e INTO edges
                                 LET inserted = NEW RETURN inserted`)
-        .then(d => d.all()).then(list => { return list[0] })
+        .then(d => d.all()).then(list => { return list[0] != null })
         .catch(e => { throw new ApolloError('Erro ao inserir Classe ' + classe._key + ': ' + e.response.body.errorMessage) });
 }
