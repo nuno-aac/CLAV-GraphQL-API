@@ -35,7 +35,7 @@ const resolvers = {
             return entidades.find(context,args._key)
         },
         legislacoes: (obj, args, context) => {
-            return legislacoes.list(context.db)
+            return legislacoes.list(context)
         },
         legislacao: (obj, args, context)  => {
             return legislacoes.find(context, args._key)

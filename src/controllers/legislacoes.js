@@ -1,6 +1,6 @@
 const { aql } = require("arangojs");
 
-module.exports.list = (context) => {
+module.exports.list = (context) => { 
     return context.db.query(aql`FOR v,e IN 1 INBOUND 'Nodes/Legislacao' GRAPH 'Graph'
                             FILTER e.rel == 'type'
                             RETURN v`)
